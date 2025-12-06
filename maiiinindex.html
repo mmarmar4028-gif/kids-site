@@ -84,7 +84,7 @@
         height: auto;
         display: block;
         margin-left: auto;
-        margin-bottom: 40px;
+        margin-top: 20px;
         cursor: pointer;
     }
 
@@ -96,12 +96,14 @@
         box-shadow: 0 6px 16px rgba(0,0,0,0.12);
         cursor: pointer;
         display: block;
-        margin-bottom: 100px;
+        margin-bottom: 20px;
+       margin-top: 20px;
+       margin-left: 0;
     }
 
     /* Свинка — фиксированная, но не мешает скроллу */
     .piggy {
-        position: fixed;
+        position: absolute;
         bottom: 100px;   /* выше навигации */
         left: 16px;
         width: 182px;
@@ -122,7 +124,7 @@
     /* Нижняя навигация */
     .nav {
         position: fixed;
-        bottom: 0; left: 0; right: 0;
+        bottom: 0; left: auto; right: auto;
         height: 84px;
         background: white;
         border-top: 1px solid #eee;
