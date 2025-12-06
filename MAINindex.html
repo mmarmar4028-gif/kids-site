@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровое приложение</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            position: relative;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            padding-bottom: 70px; /* Отступ для фиксированной панели */
+        }
+
+        /* Заголовок */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e91e63;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        /* Баланс */
+        .balance-card {
+            margin: 16px 20px;
+            padding: 16px;
+            background-color: #fff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .balance-text {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 30px;
+            background-color: #6c63ff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Стартовая область */
+        .start-area {
+            position: relative;
+            margin: 20px 16px;
+            height: 249px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .start-bg {
+            position: absolute;
+            left: 16px;
+            top: 225px;
+            width: 343px;
+            height: 249px;
+            background-image: url('start game.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+
+        .kid-card {
+            position: absolute;
+            left: 275px;
+            right: 32px;
+            top: 120px;
+            width: 63px; /* Рассчитано как 375 - 275 - 32 = 68, но уточнено по дизайну */
+            height: 80px;
+            background-image: url('kid card.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 2;
+        }
+
+        .instruction-btn {
+            position: absolute;
+            left: 195px;
+            right: 20px;
+            top: calc(225px + 249px + 35px);
+            width: 160px;
+            height: 40px;
+            background-image: url('instruction.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        /* Дополнительные карточки */
+        .additional-cards {
+            display: flex;
+            gap: 16px;
+            margin: 16px 20px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 16px;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 120px;
+        }
+
+        .card-blue {
+            background-color: #e3f2fd;
+        }
+
+        .card-green {
+            background-color: #dcedc8;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-icon-small {
+            width: 40px;
+            height: 40px;
+            background-color: #ff5722;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-image {
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .card-blue .card-image {
+            background-image: url('https://via.placeholder.com/60/FF5722/FFFFFF?text=A');
+        }
+
+        .card-green .card-image {
+            background-image: url('https://via.placeholder.com/60/4CAF50/FFFFFF?text=H');
+        }
+
+        /* Копилка */
+        .piggy-bank-section {
+            margin: 20px 20px;
+            padding: 16px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .piggy-bank-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .piggy-bank {
+            position: relative;
+            width: 182px;
+            height: 173px;
+            background-image: url('pig.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            margin-left: 38px;
+            margin-right: 155px;
+            margin-bottom: 167px;
+        }
+
+        .piggy-bank-value {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #d32f2f;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .piggy-bank-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #d32f2f;
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+        }
+
+        /* Фиксированная навигация */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 25%;
+        }
+
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .nav-item.active .nav-text {
+            color: #6c63ff;
+            font-weight: 600;
+        }
+
+        /* Попапы */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .popup-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .popup-content {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .popup-close {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="avatar">A</div>
+            <div class="username">Александра</div>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="balance-card">
+            <div>
+                <div class="balance-text">На карте</div>
+                <div class="balance-amount">6000,00 ₽</div>
+            </div>
+            <div class="card-icon">A МИР</div>
+        </div>
+
+        <!-- Start Area -->
+        <div class="start-area" id="startButton">
+            <div class="start-bg"></div>
+            <div class="kid-card"></div>
+            <div class="instruction-btn" id="instructionButton"></div>
+        </div>
+
+        <!-- Additional Cards -->
+        <div class="additional-cards">
+            <div class="card card-blue">
+                <div class="card-title">Если карта потерялась</div>
+                <div class="card-content">
+                    <div class="card-image"></div>
+                    <div class="card-icon-small">A</div>
+                </div>
+            </div>
+            <div class="card card-green">
+                <div class="card-title">Игры с Пушиком</div>
+                <div class="card-content">
+                    <div class="card-image"></div>
+                    <div class="card-title" style="font-size: 12px; margin: 0;">Как играть?</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Piggy Bank Section -->
+        <div class="piggy-bank-section">
+            <div class="section-title">Моя копилка</div>
+            <div class="piggy-bank-container">
+                <div class="piggy-bank" id="piggyBank"></div>
+                <div class="piggy-bank-value">45000₽</div>
+            </div>
+            <div class="piggy-bank-button" id="newPhoneButton">Новый телефон</div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <div class="nav-item active" id="homeNav">
+            <div class="nav-icon" style="background-image: url('home (main).png');"></div>
+            <div class="nav-text">Главный</div>
+        </div>
+        <div class="nav-item" id="historyNav">
+            <div class="nav-icon" style="background-image: url('history.png');"></div>
+            <div class="nav-text">История</div>
+        </div>
+        <div class="nav-item" id="paymentsNav">
+            <div class="nav-icon" style="background-image: url('payments.png');"></div>
+            <div class="nav-text">Платежи</div>
+        </div>
+        <div class="nav-item" id="chatsNav">
+            <div class="nav-icon" style="background-image: url('chats.png');"></div>
+            <div class="nav-text">Чаты</div>
+        </div>
+    </div>
+
+    <!-- Popups -->
+    <div class="overlay" id="instructionPopup">
+        <div class="popup fade-in">
+            <div class="popup-title">Инструкция игры</div>
+            <div class="popup-content">
+                Здесь будет текст инструкции по игре. Вы можете прочитать правила, как зарабатывать монеты и получать призы.
+            </div>
+            <button class="popup-close" id="closeInstruction">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="newPhonePopup">
+        <div class="popup fade-in">
+            <div class="popup-title">Новый телефон</div>
+            <div class="popup-content">
+                Поздравляем! Вы накопили достаточно средств для покупки нового телефона. Нажмите "Подтвердить", чтобы оформить заказ.
+            </div>
+            <button class="popup-close" id="closeNewPhone">Подтвердить</button>
+        </div>
+    </div>
+
+    <script>
+        // Инициализация localStorage
+        if (!localStorage.getItem('appData')) {
+            localStorage.setItem('appData', JSON.stringify({
+                currentScreen: 'home',
+                balance: 6000,
+                piggyBank: 45000,
+                visitedScreens: ['home']
+            }));
+        }
+
+        // Получение данных из localStorage
+        function getStorageData() {
+            return JSON.parse(localStorage.getItem('appData'));
+        }
+
+        // Сохранение данных в localStorage
+        function saveStorageData(data) {
+            localStorage.setItem('appData', JSON.stringify(data));
+        }
+
+        // Переключение экранов
+        function navigateTo(screenName) {
+            const data = getStorageData();
+            data.currentScreen = screenName;
+            if (!data.visitedScreens.includes(screenName)) {
+                data.visitedScreens.push(screenName);
+            }
+            saveStorageData(data);
+            
+            // В реальном приложении здесь бы происходила навигация между экранами
+            console.log(`Переход на экран: ${screenName}`);
+            
+            // Обновление активного пункта навигации
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            switch(screenName) {
+                case 'home':
+                    document.getElementById('homeNav').classList.add('active');
+                    break;
+                case 'history':
+                    document.getElementById('historyNav').classList.add('active');
+                    break;
+                case 'payments':
+                    document.getElementById('paymentsNav').classList.add('active');
+                    break;
+                case 'chats':
+                    document.getElementById('chatsNav').classList.add('active');
+                    break;
+            }
+        }
+
+        // Открытие попапа
+        function openPopup(popupId) {
+            document.getElementById(popupId).style.display = 'flex';
+        }
+
+        // Закрытие попапа
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        // Обработчики событий
+        document.getElementById('startButton').addEventListener('click', function() {
+            navigateTo('game');
+            alert('Переход на игровой экран!');
+        });
+
+        document.getElementById('instructionButton').addEventListener('click', function() {
+            openPopup('instructionPopup');
+        });
+
+        document.getElementById('piggyBank').addEventListener('click', function() {
+            openPopup('newPhonePopup');
+        });
+
+        document.getElementById('newPhoneButton').addEventListener('click', function() {
+            openPopup('newPhonePopup');
+        });
+
+        document.getElementById('closeInstruction').addEventListener('click', function() {
+            closePopup('instructionPopup');
+        });
+
+        document.getElementById('closeNewPhone').addEventListener('click', function() {
+            closePopup('newPhonePopup');
+        });
+
+        // Навигационные кнопки
+        document.getElementById('homeNav').addEventListener('click', function() {
+            navigateTo('home');
+        });
+
+        document.getElementById('historyNav').addEventListener('click', function() {
+            navigateTo('history');
+            alert('Переход на экран "История"!');
+        });
+
+        document.getElementById('paymentsNav').addEventListener('click', function() {
+            navigateTo('payments');
+            alert('Переход на экран "Платежи"!');
+        });
+
+        document.getElementById('chatsNav').addEventListener('click', function() {
+            navigateTo('chats');
+            alert('Переход на экран "Чаты"!');
+        });
+
+        // Инициализация: установка текущего экрана
+        window.addEventListener('DOMContentLoaded', function() {
+            const data = getStorageData();
+            navigateTo(data.currentScreen);
+        });
+    </script>
+</body>
+</html>
