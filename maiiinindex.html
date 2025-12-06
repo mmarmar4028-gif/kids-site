@@ -198,13 +198,17 @@
         <div class="start-btn" id="startGameBtn">
             <img src="start game.png" alt="START">
         </div>
-
-        <!-- Инструкция (справа) -->
-        <img src="instruction.png" class="instruction" id="openInstruction" alt="Как играть?">
-
-        <!-- Если карта потерялась (слева) -->
-        <img src="lost card.png" class="lost-card" id="openLostCard" alt="Если карта потерялась">
-
+        <!-- Вместо двух отдельных картинок вставь вот этот блок -->
+        <div style="margin-top: 180px; display: flex; justify-content: space-between; padding: 0 16px;">
+            <!-- Слева — Если карта потерялась -->
+            <img src="lost card.png" 
+                 id="openLostCard"
+                 style="width: 160px; height: 160px; border-radius: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); cursor: pointer;">
+            <!-- Справа — Инструкция -->
+            <img src="instruction.png" 
+                 id="openInstruction"
+                 style="width: 160px; height: auto; cursor: pointer;">
+        </div>
         <!-- Пустое место внизу — чтобы можно было проскроллить свинку вверх -->
         <div style="height: 300px;"></div>
 
