@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=375, height=812, user-scalable=no, initial-scale=1.0" />
+  <title>Заглавный экран</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 375px;
+      height: 812px;
+      position: relative;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+    }
+
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 375px;
+      height: 812px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .fixed-bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 375px;
+      height: 60px; /* adjust if needed */
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #f0f0f0;
+      z-index: 100;
+    }
+
+    .fixed-bottom img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    /* popups */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .popup-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .popup-close {
+      margin-top: 12px;
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main screen -->
+  <div class="screen" id="main-screen">
+    <!-- Kid card -->
+    <img src="kid card.png" alt="Kid Card"
+         style="position: absolute; left: 275px; top: 120px; width: calc(375px - 275px - 32px); height: auto;">
+
+    <!-- Start button -->
+    <img src="start game.png" alt="Start Game"
+         class="clickable"
+         id="start-btn"
+         style="position: absolute; left: 16px; top: 225px; width: 343px; height: 249px;">
+
+    <!-- Instruction -->
+    <img src="instruction.png" alt="Instruction"
+         class="clickable"
+         id="instruction-btn"
+         style="position: absolute; left: 195px; top: calc(225px + 249px + 35px); width: calc(375px - 195px - 20px); height: auto;">
+
+    <!-- Piggy bank -->
+    <img src="pig.png" alt="Pig"
+         class="clickable"
+         id="pig-btn"
+         style="position: absolute; left: 38px; bottom: 167px; width: 182px; height: 173px;">
+  </div>
+
+  <!-- Fixed bottom nav -->
+  <div class="fixed-bottom">
+    <img src="home (main).png" alt="Главная" class="clickable" id="nav-home">
+    <img src="history.png" alt="История" class="clickable" id="nav-history">
+    <img src="payments.png" alt="Платежи" class="clickable" id="nav-payments">
+    <img src="chats.png" alt="Чаты" class="clickable" id="nav-chats">
+  </div>
+
+  <!-- Popups -->
+  <div class="popup-overlay" id="popup-phone">
+    <div class="popup-content">
+      <div class="popup-title">Новый телефон</div>
+      <div>Это попап для нового телефона.</div>
+      <div class="popup-close" onclick="document.getElementById('popup-phone').style.display='none'">Закрыть</div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popup-instruction">
+    <div class="popup-content">
+      <div class="popup-title">Инструкция игры</div>
+      <div>Здесь будет инструкция к игре.</div>
+      <div class="popup-close" onclick="document.getElementById('popup-instruction').style.display='none'">Закрыть</div>
+    </div>
+  </div>
+
+  <script>
+    // Save current screen to localStorage (for future use)
+    localStorage.setItem('currentScreen', 'main');
+
+    // Start button → go to "игровой" screen (stub)
+    document.getElementById('start-btn').addEventListener('click', () => {
+      alert('Переход на экран "игровой" (в будущем будет реализован)');
+      // In future: renderGameScreen();
+    });
+
+    // Pig click → show "новый телефон" popup
+    document.getElementById('pig-btn').addEventListener('click', () => {
+      document.getElementById('popup-phone').style.display = 'flex';
+    });
+
+    // Instruction click → show "инструкция игры" popup
+    document.getElementById('instruction-btn').addEventListener('click', () => {
+      document.getElementById('popup-instruction').style.display = 'flex';
+    });
+
+    // Navigation buttons (currently just log)
+    document.querySelectorAll('.fixed-bottom img').forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        const names = ['главный', 'история', 'платежи', 'чаты'];
+        console.log('Clicked:', names[idx]);
+        // Later: navigate to respective screen
+      });
+    });
+
+    // Close popups on background click
+    document.querySelectorAll('.popup-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.style.display = 'none';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
