@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Детское приложение</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body {
+        height: 100%;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f5f7ff;
+        width: 375px;
+        min-height: 812px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* Главный экран — теперь прокручивается */
+    #main-screen {
+        background: linear-gradient(to bottom, #f8f9ff 0%, #e8edff 100%);
+        min-height: 812px;
+        padding-bottom: 100px; /* место под фиксированную навигацию */
+        position: relative;
+    }
+
+    /* Контейнер с прокруткой */
+    .scroll-container {
+        padding: 0 16px;
+        padding-top: 20px;
+        min-height: calc(812px - 84px);
+    }
+
+    /* Шапка */
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .avatar {
+        width: 44px; height: 44px; background: #e86aff; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 24px; font-weight: bold;
+    }
+    .user-name { font-size: 18px; font-weight: 600; }
+
+    /* Баланс */
+    .balance {
+        background: white;
+        border-radius: 16px;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        margin-bottom: 40px;
+    }
+    .balance-text { font-size: 14px; color: #888; }
+    .balance-amount { font-size: 24px; font-weight: 700; }
+
+    /* Кнопка START */
+    .start-btn {
+        width: 343px;
+        height: 249px;
+        margin: 0 auto 40px;
+        cursor: pointer;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(255,0,0,0.25);
+    }
+    .start-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Инструкция — справа */
+    .instruction {
+        width: 160px;
+        height: auto;
+        display: block;
+        margin-left: auto;
+        margin-bottom: 40px;
+        cursor: pointer;
+    }
+
+    /* Если карта потерялась — слева */
+    .lost-card {
+        width: 160px;
+        height: 160px;
+        border-radius: 22px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        cursor: pointer;
+        display: block;
+        margin-bottom: 100px;
+    }
+
+    /* Свинка — фиксированная, но не мешает скроллу */
+    .piggy {
+        position: fixed;
+        bottom: 100px;   /* выше навигации */
+        left: 16px;
+        width: 182px;
+        height: 173px;
+        cursor: pointer;
+        z-index: 50;
+    }
+
+    /* Карточка ребёнка — absolute, но вверху */
+    .kid-card {
+        position: absolute;
+        top: 96px;
+        right: 32px;
+        width: 68px;
+        z-index: 11;
+    }
+
+    /* Нижняя навигация */
+    .nav {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 84px;
+        background: white;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 375px;
+        z-index: 100;
+    }
+    .nav-item {
+        text-align: center;
+        cursor: pointer;
+    }
+    .nav-item img { width: 34px; height: 34px; }
+    .nav-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .nav-item.active .nav-label { color: #000; font-weight: 600; }
+
+    /* Попапы */
+    .overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.65);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+    }
+    .popup {
+        background: white;
+        border-radius: 24px;
+        padding: 32px 24px;
+        text-align: center;
+        max-width: 320px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .popup h2 { margin-bottom: 16px; font-size: 22px; }
+    .close-popup {
+        margin-top: 24px;
+        padding: 12px 40px;
+        background: #ff5c8a;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div id="main-screen" class="screen active">
+    <div class="scroll-container">
+
+        <div class="header">
+            <div class="avatar">А</div>
+            <div class="user-name" id="userName">Александра</div>
+        </div>
+
+        <div class="balance">
+            <div>
+                <div class="balance-text">На карте</div>
+                <div class="balance-amount" id="balance">6 000,00 ₽</div>
+            </div>
+            <img src="mir-card-mini.png" width="80" height="50" alt="карта">
+        </div>
+
+        <!-- Карточка ребёнка (в углу) -->
+        <img src="kid card.png" class="kid-card" alt="карточка">
+
+        <!-- Кнопка START -->
+        <div class="start-btn" id="startGameBtn">
+            <img src="start game.png" alt="START">
+        </div>
+
+        <!-- Инструкция (справа) -->
+        <img src="instruction.png" class="instruction" id="openInstruction" alt="Как играть?">
+
+        <!-- Если карта потерялась (слева) -->
+        <img src="lost card.png" class="lost-card" id="openLostCard" alt="Если карта потерялась">
+
+        <!-- Пустое место внизу — чтобы можно было проскроллить свинку вверх -->
+        <div style="height: 300px;"></div>
+
+    </div>
+
+    <!-- Свинка (фиксированная) -->
+    <img src="pig.png" class="piggy" id="openPiggyPopup" alt="копилка">
+
+    <!-- Нижняя навигация -->
+    <div class="nav">
+        <div class="nav-item active" data-screen="main-screen">
+            <img src="home (main).png" alt="Главная"><span class="nav-label">Главный</span>
+        </div>
+        <div class="nav-item" data-screen="history-screen">
+            <img src="history.png" alt="История"><span class="nav-label">История</span>
+        </div>
+        <div class="nav-item" data-screen="payments-screen">
+            <img src="payments.png" alt="Платежи"><span class="nav-label">Платежи</span>
+        </div>
+        <div class="nav-item" data-screen="chats-screen">
+            <img src="chats.png" alt="Чаты"><span class="nav-label">Чаты</span>
+        </div>
+    </div>
+</div>
+
+<!-- Игровой экран -->
+<div id="game-screen" class="screen">
+    <div style="padding:50px; text-align:center; font-size:20px;">ИГРОВОЙ ЭКРАН<br><br>Готов к следующему дизайну!</div>
+</div>
+
+<!-- Попапы -->
+<div class="overlay" id="piggyOverlay">
+    <div class="popup">
+        <h2>Новый телефон</h2>
+        <p>Текущая цель — собрать 45 000 ₽ на новый телефон!</p>
+        <button class="close-popup" onclick="closeOverlay('piggyOverlay')">Закрыть</button>
+    </div>
+</div>
+
+<div class="overlay" id="instructionOverlay">
+    <div class="popup">
+        <h2>Как играть с Пушиком?</h2>
+        <p>Выполняй задания, получай опыт и проходи уровни.<br><br>
+           Зарабатывай альфики при прохождении каждого уровня.<br><br>
+           Одевай Пушика за альфики.</p>
+        <button class="close-popup" onclick="closeOverlay('instructionOverlay')">Понятно</button>
+    </div>
+</div>
+
+<div class="overlay" id="lostCardOverlay">
+    <div class="popup">
+        <h2>Если карта потерялась</h2>
+        <p>Позвони маме: <b>+7 (999) 123-45-67</b><br><br>
+           Или напиши в чат — мы быстро заблокируем карту!</p>
+        <button class="close-popup" onclick="closeOverlay('lostCardOverlay')">Понятно</button>
+    </div>
+</div>
+
+<script>
+// LocalStorage
+let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
+document.getElementById('userName').textContent = userData.name;
+document.getElementById('balance').textContent = userData.balance.toLocaleString('ru-RU') + ' ₽';
+
+// Переключение экранов
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === id));
+}
+document.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', () => showScreen(el.dataset.screen)));
+
+// Клик по кнопкам
+document.getElementById('startGameBtn').addEventListener('click', () => showScreen('game-screen'));
+document.getElementById('openPiggyPopup').addEventListener('click', () => document.getElementById('piggyOverlay').style.display = 'flex');
+document.getElementById('openInstruction').addEventListener('click', () => document.getElementById('instructionOverlay').style.display = 'flex');
+document.getElementById('openLostCard').addEventListener('click', () => document.getElementById('lostCardOverlay').style.display = 'flex');
+
+function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
+document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click', e => { if (e.target === ov) ov.style.display = 'none'; }));
+</script>
+</body>
+</html>
