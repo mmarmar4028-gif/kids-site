@@ -94,15 +94,6 @@
         z-index: 11;
     }
 
-   /* Инструкция — 35px ниже конца кнопки START */
-    .lost card {
-        position: absolute;
-        top: 450px;           
-        left: 16px;
-        width: 160;
-        cursor: pointer;
-        z-index: 11;
-     }   
     /* Свинка-копилка */
     .piggy {
         position: absolute;
@@ -193,12 +184,19 @@
     <img src="kid card.png" class="kid-card" alt="карточка">
 
     <!-- Инструкция -->
-    <img src="instruction.png" class="Instruction" id="openinstruction" alt="Как играть?"
-   width:160>
+    <img src="instruction.png" class="Instruction" id="openinstruction" alt="Как играть?">
    
-    <!-- Потерянные карты -->
-    <img src="lost card.png" class="lost card" id="openlost card" alt="Что делать, если карта потерялась?"
-       width: 160>
+  <!-- Карточка "Если карта потерялась" -->
+<img src="lost card.png" 
+     style="position: absolute; 
+            top: 450px; 
+            left: 16px; 
+            width: 160px; 
+            height: 160px; 
+            border-radius: 16px; 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            z-index: 11;" 
+     alt="Если карта потерялась">
 
     <!-- Свинка -->
     <img src="pig.png" class="piggy" id="openPiggyPopup" alt="копилка">
