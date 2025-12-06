@@ -304,16 +304,21 @@
          style="position:absolute; top:80px; left:200px; cursor:pointer; z-index:60;">
 
     <!-- Мини-игры (горизонтальный скролл) -->
-    <div style="position:absolute; top:420px; left:0; right:0; bottom:120px; overflow-x:auto; overflow-y:hidden; padding:20px 16px; -webkit-overflow-scrolling:touch; z-index:10;">
-        <div style="display:inline-flex; gap:15px; min-width:max-content;">
-            <img src="fin quiz.png"      width="150" height="123" class="mini-game" data-name="Финансовый квиз" data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="tetris.png"        width="150" height="123" class="mini-game" data-name="Тетрис" data-desc="Собирай линии!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="chess.png"         width="150" height="123" class="mini-game" data-name="Шахматы" data-desc="Развивай мышление!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="tic-toe.png"       width="150" height="123" class="mini-game" data-name="Крестики-нолики" data-desc="Играй с друзьями!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="tower.png"         width="150" height="123" class="mini-game" data-name="Построй башню" data-desc="Строй высокую башню!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="3-in-a-row.png"    width="150" height="123" class="mini-game" data-name="3 в ряд" data-desc="Собирай конфеты!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="block blust.png"   width="150" height="123" class="mini-game" data-name="Block Blust" data-desc="Взрывай блоки!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
-            <img src="flying bird.png"   width="150" height="123" class="mini-game" data-name="Flying bird" data-desc="Пролети между трубами!" onclick="openMiniGame(this)" style="border-radius:20px; cursor:pointer; flex-shrink:0;">
+     <!-- Мини-игры: 2 ряда по 4 штуки -->
+    <div style="position:absolute; top:470px; left:0; right:0; padding:0 16px;">
+        <div style="display:grid; grid-template-columns: repeat(4, 150px); gap:15px 15px; justify-content:space-between;">
+            
+            <!-- Первый ряд -->
+            <img src="fin quiz.png"       width="150" height="123" class="mini-game" data-name="Финансовый квиз"       data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)">
+            <img src="tetris.png"         width="150" height="123" class="mini-game" data-name="Тетрис"               data-desc="Собирай линии!" onclick="openMiniGame(this)">
+            <img src="tower.png"          width="150" height="123" class="mini-game" data-name="Построй башню"         data-desc="Строй выше всех!" onclick="openMiniGame(this)">
+            <img src="3-in-a-row.png"     width="150" height="123" class="mini-game" data-name="3 в ряд"               data-desc="Собирай конфетки!" onclick="openMiniGame(this)">
+
+            <!-- Второй ряд -->
+            <img src="block blust.png"    width="150" height="123" class="mini-game" data-name="Block Blust"           data-desc="Взрывай блоки!" onclick="openMiniGame(this)">
+            <img src="flying bird.png"    width="150" height="123" class="mini-game" data-name="Flying bird"           data-desc="Лети между трубами!" onclick="openMiniGame(this)">
+            <img src="chess.png"          width="150" height="123" class="mini-game" data-name="Шахматы"               data-desc="Играй в шахматы!" onclick="openMiniGame(this)">
+            <img src="tic-toe.png"        width="150" height="123" class="mini-game" data-name="Крестики-нолики"       data-desc="Классическая игра!" onclick="openMiniGame(this)">
         </div>
     </div>
 
