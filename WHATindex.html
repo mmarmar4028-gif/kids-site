@@ -266,7 +266,7 @@
     </div>
 
     <!-- Шапка -->
-    <div style="padding:16px 16px 0; display:flex; align-items:center; justify-content:space-between;">
+    <div style="padding:40px 16px 0; display:flex; align-items:center; justify-content:space-between;">
         <div style="display:flex; align-items:center; gap:12px;">
             <div style="width:44px; height:44px; background:#e86aff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold;">П</div>
             <span style="font-size:18px; font-weight:600;">Пушик Васек</span>
@@ -327,6 +327,11 @@
 </div>   
 </div>
 
+   <div id="tasks-screen" class="screen"><div style="padding:50px; text-align:center;">МОИ ЗАДАНИЯ<br>(следующий экран)</div></div>
+<div id="video-screen" class="screen"><div style="padding:50px; text-align:center;">ВИДЕО-УРОКИ<br>(следующий экран)</div></div>
+
+
+   
 <!-- Попапы -->
 <div class="overlay" id="piggyOverlay">
     <div class="popup">
@@ -355,6 +360,37 @@
     </div>
 </div>
 
+   <!-- Попап: Информация об уровне -->
+<div class="overlay" id="levelOverlay">
+    <div class="popup">
+        <h2>Уровень 1 → 2</h2>
+        <p>Собери ещё <b>65 XP</b>, чтобы перейти на следующий уровень!<br><br>
+           За прохождение получишь:<br>
+           • 50 альфиков<br>
+           • Новую одежду для Пушика</p>
+        <button class="close-popup" onclick="closeOverlay('levelOverlay')">Понятно</button>
+    </div>
+</div>
+
+<!-- Попап: Мини-игра -->
+<div class="overlay" id="miniGameOverlay">
+    <div class="popup">
+        <h2 id="gameTitle">Игра</h2>
+        <p id="gameDesc" style="margin:20px 0;">Описание игры...</p>
+        <button class="close-popup" style="background:#4CAF50;">Играть</button>
+        <button class="close-popup" onclick="closeOverlay('miniGameOverlay')" style="margin-top:10px; background:#999;">Отмена</button>
+    </div>
+</div>
+
+<!-- Попап: Пополнить альфики (заглушка) -->
+<div class="overlay" id="alfikiOverlay">
+    <div class="popup">
+        <h2>Пополнить альфики</h2>
+        <p>Скоро здесь можно будет купить альфики за реальные деньги или получить от родителей</p>
+        <button class="close-popup" onclick="closeOverlay('alfikiOverlay')">Понятно</button>
+    </div>
+</div>
+   
 <script>
 // LocalStorage
 let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
@@ -377,6 +413,28 @@ document.getElementById('openLostCard').addEventListener('click', () => document
 
 function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
 document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click', e => { if (e.target === ov) ov.style.display = 'none'; }));
+   // Открытие попапа уровня
+document.getElementById('openLevelPopup')?.addEventListener('click', () => {
+    document.getElementById('levelOverlay').style.display = 'flex';
+});
+
+// Открытие попапа мини-игры
+function openMiniGame(img) {
+    document.getElementById('gameTitle').textContent = img.dataset.name;
+    document.getElementById('gameDesc').textContent = img.dataset.desc;
+    document.getElementById('miniGameOverlay').style.display = 'flex';
+}
+
+// Пополнить альфики
+document.getElementById('openAlfikiPopup')?.addEventListener('click', () => {
+    document.getElementById('alfikiOverlay').style.display = 'flex';
+});
+
+// Гардероб (пока заглушка)
+document.getElementById('openWardrobe')?.addEventListener('click', () => {
+    alert('Гардероб Пушика — скоро будет!');
+});
+   
 </script>
 </body>
 </html>
