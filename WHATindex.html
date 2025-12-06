@@ -258,7 +258,8 @@
 
    
 <!-- Игровой экран -->
-<div id="game-screen" class="screen" style="position:relative;">
+<!-- Стало — добавляем фиксированную высоту и прокрутку -->
+<div id="game-screen" class="screen" style="background:#f8f9ff; height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative;">
 
     <!-- Кнопка "Назад" - слева сверху -->
     <div style="position:absolute; top:16px; left:16px; z-index:100; cursor:pointer; font-size:18px; font-weight:600; color:#333;" onclick="showScreen('main-screen')">
