@@ -203,7 +203,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: flex-start; 
-            padding: 16px;               /* отступы от краёв экрана */
+            padding: 16 16 px;               /* отступы от краёв экрана */
             gap: 10px;">
 
     <!-- Слева — Если карта потерялась -->
@@ -215,6 +215,7 @@
                 box-shadow: 0 6px 16px rgba(0,0,0,0.12); 
                 cursor: pointer; 
                 flex-shrink: 0;" 
+       left: 16px;
          alt="Если карта потерялась">
 
     <!-- Справа — Инструкция -->
@@ -223,7 +224,8 @@
          style="width: 160px; 
                 height: auto; 
                 cursor: pointer; 
-                flex-shrink: 0;" 
+                flex-shrink: 0;"
+       right: 16px;
          alt="Как играть?">
 </div>
 
