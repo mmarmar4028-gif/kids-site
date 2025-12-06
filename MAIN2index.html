@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Копилка Плушика</title>
+<title>Копилка Пушика</title>
 <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -49,17 +49,35 @@
     .balance-text { font-size: 14px; color: #666; }
     .balance-amount { font-size: 24px; font-weight: 700; }
 
-    /* Картинка START */
-    .start-btn {
-        margin: 225px 16px 0;
-        width: 343px;
-        height: 249px;
-        cursor: pointer;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 8px 20px rgba(255,0,0,0.2);
-    }
-    .start-btn img { width: 100%; height: 100%; object-fit: cover; }
+  /* Картинка START — точное позиционирование */
+.start-wrapper {
+    position: relative;
+    width: 375px;
+    height: 225px; /* расстояние до верха картинки */
+    margin: 0 auto;
+    pointer-events: none; /* чтобы не перехватывал клики */
+}
+
+.start-btn {
+    position: absolute;
+    top: 225px;           /* точно 225 px от верха экрана */
+    left: 16px;
+    right: 16px;
+    width: 343px;
+    height: 249px;
+    cursor: pointer;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(255,0,0,0.2);
+    pointer-events: auto; /* клик работает только по самой картинке */
+    z-index: 5;
+}
+
+.start-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
     /* Карточка ребёнка */
     .kid-card {
@@ -151,6 +169,13 @@
         <img class="card-mini" src="mir-card-mini.png" alt="карта">
     </div>
 
+   <!-- Обёртка, чтобы всё остальное «текло» правильно -->
+<div class="start-wrapper"></div>
+
+<!-- Кнопка START — теперь точно на 225px сверху -->
+<div class="start-btn" id="startGameBtn">
+    <img src="start game.png" alt="START">
+</div>
     <!-- Кнопка START -->
     <div class="start-btn" id="startGameBtn">
         <img src="start game.png" alt="START">
