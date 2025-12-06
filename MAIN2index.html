@@ -35,7 +35,7 @@
         .header {
             position: fixed;
             top: 0;
-            left: 0;
+            left: auto;
             width: 375px;
             height: 60px;
             background-color: #fff;
@@ -63,23 +63,28 @@
             font-size: 18px;
             font-weight: 600;
         }
-
-        /* Баланс карточка */
-        .balance-card {
-            position: fixed;
-            top: 60px;
-            left: 20px;
-            right: 20px;
-            height: 60px;
-            background-color: #fff;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            z-index: 99;
-        }
+<div class="balance-card">
+  <!-- твой текущий контент баланса (иконки, цифры и т.д.) -->
+  <div class="kid-card-container"></div>
+</div>
+/* Баланс карточка */
+.balance-card {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%); /* чтобы карточка была по центру */
+  width: 300px; /* или любая нужная ширина */
+  height: 60px;
+  background-color: #fff;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  z-index: 99;
+  /* важно: не меняй position — fixed остаётся */
+}
 
         .balance-text {
             font-size: 16px;
@@ -90,18 +95,6 @@
             font-size: 24px;
             font-weight: bold;
             color: #333;
-        }
-
-        .card-balance-icon {
-            width: 60px;
-            height: 30px;
-            background-color: #6c5ce7;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
         }
 
         /* Кнопка START — абсолютные координаты от краёв */
@@ -122,16 +115,19 @@
             object-fit: contain;
         }
 
-        /* Карточка ребёнка */
-        .kid-card-container {
-            position: fixed;
-            left: 275px;
-            right: 32px;
-            top: 120px;
-            width: 68px;
-            height: 100px;
-            z-index: 5;
-        }
+  /* Карточка ребёнка */
+.kid-card-container {
+  position: absolute;
+  bottom: -40px; /* выступает вниз на 40px (подстрой по вкусу) */
+  left: 50%;
+  transform: translateX(-50%); /* чтобы была по центру относительно баланс-карточки */
+  width: 68px;
+  height: 100px;
+  z-index: 101;
+  /* фон или изображение для наглядности */
+  background-color: #ccc;
+  border-radius: 12px;
+}
 
         .kid-card-container img {
             width: 100%;
