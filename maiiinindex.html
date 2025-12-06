@@ -188,7 +188,6 @@
                 <div class="balance-text">На карте</div>
                 <div class="balance-amount" id="balance">6 000,00 ₽</div>
             </div>
-            <img src="mir-card-mini.png" width="80" height="50" alt="карта">
         </div>
 
         <!-- Карточка ребёнка (в углу) -->
@@ -198,17 +197,37 @@
         <div class="start-btn" id="startGameBtn">
             <img src="start game.png" alt="START">
         </div>
-        <!-- Вместо двух отдельных картинок вставь вот этот блок -->
-        <div style="margin-top: 180px; display: flex; justify-content: space-between; padding: 0 16px;">
-            <!-- Слева — Если карта потерялась -->
-            <img src="lost card.png" 
-                 id="openLostCard"
-                 style="width: 160px; height: 160px; border-radius: 22px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); cursor: pointer;">
-            <!-- Справа — Инструкция -->
-            <img src="instruction.png" 
-                 id="openInstruction"
-                 style="width: 160px; height: auto; cursor: pointer;">
-        </div>
+
+       <!-- Две карточки на одной высоте: слева и справа -->
+<div style="margin-top: 220px;            /* ← подбери высоту под свои 450px */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            padding: 0 16px;               /* отступы от краёв экрана */
+            gap: 20px;">                   /* ← дополнительный отступ между картинками (можно 30px, 40px и т.д.) */
+
+    <!-- Слева — Если карта потерялась -->
+    <img src="lost card.png" 
+         id="openLostCard"
+         style="width: 160px; 
+                height: 160px; 
+                border-radius: 22px; 
+                box-shadow: 0 6px 16px rgba(0,0,0,0.12); 
+                cursor: pointer; 
+                flex-shrink: 0;" 
+         alt="Если карта потерялась">
+
+    <!-- Справа — Инструкция -->
+    <img src="instruction.png" 
+         id="openInstruction"
+         style="width: 160px; 
+                height: auto; 
+                cursor: pointer; 
+                flex-shrink: 0;" 
+         alt="Как играть?">
+</div>
+
+       
         <!-- Пустое место внизу — чтобы можно было проскроллить свинку вверх -->
         <div style="height: 300px;"></div>
 
