@@ -1,423 +1,266 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Игровое приложение</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Копилка Плушика</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f5f7ff;
+        min-height: 812px;
+        width: 375px;
+        margin: 0 auto;
+        position: relative;
+        overflow-x: hidden;
+    }
+    .screen { display: none; width: 375px; min-height: 812px; position: absolute; top:0; left:0; }
+    .screen.active { display: block; }
 
-        body {
-            width: 375px;
-            height: 812px;
-            overflow-y: auto;
-            background-color: #f5f5f5;
-            position: relative;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-        }
+    /* Заглавный экран */
+    #main-screen {
+        background: linear-gradient(to bottom, #f8f9ff 0%, #e8edff 100%);
+        padding-bottom: 90px; /* место под фиксированную навигацию */
+    }
+    .header {
+        padding: 20px 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .avatar {
+        width: 44px; height: 44px; background: #e86aff; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 24px;
+    }
+    .user-name { font-size: 18px; font-weight: 600; }
 
-        /* Убираем отступы, чтобы позиционирование было от краёв */
-        .main-content {
-            flex: 1;
-            position: relative;
-            padding: 0;
-            margin: 0;
-        }
+    .balance {
+        margin: 20px 16px;
+        background: white;
+        border-radius: 16px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .balance-text { font-size: 14px; color: #666; }
+    .balance-amount { font-size: 24px; font-weight: 700; }
+    .card-mini { width: 80px; height: 50px; border-radius: 8px; background: linear-gradient(135deg, #667eea, #764ba2); }
 
-        /* Заголовок */
-        .header {
-            position: fixed;
-            top: 0;
-            left: auto;
-            width: 375px;
-            height: 60px;
-            background-color: #fff;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
+    /* Картинка START */
+    .start-btn {
+        margin: 225px 16px 0;
+        width: 343px;
+        height: 249px;
+        cursor: pointer;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(255,0,0,0.2);
+    }
+    .start-btn img { width: 100%; height: 100%; object-fit: cover; }
 
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #ff69b4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            margin-right: 12px;
-        }
+    /* Карточка ребёнка */
+    .kid-card {
+        position: absolute;
+        top: 120px;
+        left: 275px;
+        right: 32px;
+        width: 68px;
+        height: auto;
+    }
 
-        .username {
-            font-size: 18px;
-            font-weight: 600;
-        }
-<div class="balance-card">
-  <!-- твой текущий контент баланса (иконки, цифры и т.д.) -->
-  <div class="kid-card-container"></div>
-</div>
-        
-/* Баланс карточка */
-.balance-card {
-  position: fixed;
-  top: 60px;
-  left: 50%;
-  transform: translateX(-50%); /* чтобы карточка была по центру */
-  width: 300px; /* или любая нужная ширина */
-  height: 60px;
-  background-color: #fff;
-  border-radius: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  z-index: 99;
-  /* важно: не меняй position — fixed остаётся */
-}
+    /* Инструкция */
+    .instruction {
+        position: absolute;
+        top: calc(225px + 249px + 35px);
+        left: 195px;
+        right: 20px;
+        width: 160px;
+        cursor: pointer;
+    }
 
-        .balance-text {
-            font-size: 16px;
-            color: #666;
-        }
+    /* Копилка */
+    .piggy {
+        position: fixed;
+        bottom: 167px;
+        left: 38px;
+        width: 182px;
+        height: 173px;
+        cursor: pointer;
+        z-index: 10;
+    }
 
-        .balance-amount {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-        }
+    /* Нижняя навигация */
+    .nav {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: 84px;
+        background: white;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 375px;
+    }
+    .nav-item {
+        text-align: center;
+        cursor: pointer;
+        padding: 8px;
+    }
+    .nav-item img { width: 28px; height: 28px; }
+    .nav-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .nav-item.active .nav-label { color: #000; font-weight: 600; }
 
-        /* Кнопка START — абсолютные координаты от краёв */
-        .start-game-container {
-            position: fixed;
-            left: 16px;
-            right: 16px;
-            top: 225px;
-            width: 343px;
-            height: 249px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .start-game-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-  /* Карточка ребёнка */
-.kid-card-container {
-  position: absolute;
-  bottom: -40px; /* выступает вниз на 40px (подстрой по вкусу) */
-  left: 50%;
-  transform: translateX(-50%); /* чтобы была по центру относительно баланс-карточки */
-  width: 68px;
-  height: 70px;
-  z-index: 101;
-  /* фон или изображение для наглядности */
-  background-color: #ccc;
-  border-radius: 12px;
-}
-
-        .kid-card-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Инструкция */
-        .instruction-container {
-            position: fixed;
-            left: 195px;
-            right: 20px;
-            top: calc(225px + 249px + 35px); /* START + его высота + 35px */
-            width: 160px;
-            height: 80px;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        .instruction-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Свинья */
-        .pig-container {
-            position: fixed;
-            left: 38px;
-            right: 155px;
-            bottom: 167px;
-            width: 182px;
-            height: 173px;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .pig-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Закреплённая нижняя панель */
-        .fixed-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 375px;
-            height: 70px;
-            background-color: #fff;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .footer-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            cursor: pointer;
-        }
-
-        .footer-btn img {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 4px;
-        }
-
-        .footer-btn span {
-            font-size: 12px;
-            text-align: center;
-            color: #666;
-        }
-
-        /* Попапы */
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .popup-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            max-width: 300px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .popup-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .popup-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #999;
-        }
-
-        .popup-close:hover {
-            color: #333;
-        }
-
-        .popup-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #6c5ce7;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .popup-button:hover {
-            background-color: #5d4fc5;
-        }
-    </style>
+    /* Попапы */
+    .overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+    }
+    .popup {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        max-width: 300px;
+    }
+    .popup h2 { margin-bottom: 16px; }
+    .close-popup { margin-top: 20px; padding: 10px 30px; background: #ff5c8a; color: white; border: none; border-radius: 30px; cursor: pointer; }
+</style>
 </head>
 <body>
-    <!-- Основной контент -->
-    <div class="main-content">
-        <!-- Все элементы позиционируются фиксированно, поэтому здесь ничего не нужно -->
-    </div>
 
-    <!-- Фиксированные элементы -->
+<!-- ЭКРАН: Главный -->
+<div id="main-screen" class="screen active">
     <div class="header">
         <div class="avatar">А</div>
-        <div class="username">Александра</div>
+        <div class="user-name" id="userName">Александра</div>
     </div>
 
-    <div class="balance-card">
+    <div class="balance">
         <div>
             <div class="balance-text">На карте</div>
-            <div class="balance-amount">6000,00 ₽</div>
+            <div class="balance-amount" id="balance">6000,00 ₽</div>
         </div>
-        <div class="card-balance-icon">A МИР</div>
+        <img class="card-mini" src="mir-card-mini.png" alt="карта">
     </div>
 
     <!-- Кнопка START -->
-    <div class="start-game-container" id="startGameBtn">
-        <img src="start game.png" alt="Start Game">
+    <div class="start-btn" id="startGameBtn">
+        <img src="start game.png" alt="START">
     </div>
 
-    <!-- Карточка ребёнка -->
-    <div class="kid-card-container">
-        <img src="kid card.png" alt="Kid Card">
-    </div>
+    <!-- Карточка ребёнка (если потерялась карта) -->
+    <img src="kid card.png" class="kid-card" alt="карточка ребёнка">
 
     <!-- Инструкция -->
-    <div class="instruction-container" id="instructionBtn">
-        <img src="instruction.png" alt="Instruction">
-    </div>
+    <img src="instruction.png" class="instruction" id="openInstruction" alt="Как играть">
 
-    <!-- Свинья -->
-    <div class="pig-container" id="pigBtn">
-        <img src="pig.png" alt="Piggy Bank">
-    </div>
+    <!-- Свинка-копилка -->
+    <img src="pig.png" class="piggy" id="openPiggyPopup" alt="копилка">
 
-    <!-- Нижняя панель -->
-    <div class="fixed-footer">
-        <div class="footer-btn" id="homeBtn">
-            <img src="home (main).png" alt="Главная">
-            <span>Главный</span>
+    <!-- Фиксированная нижняя навигация -->
+    <div class="nav">
+        <div class="nav-item active" data-screen="main-screen">
+            <img src="home (main).png" alt="Главная"><br>
+            <span class="nav-label">Главный</span>
         </div>
-        <div class="footer-btn" id="historyBtn">
-            <img src="history.png" alt="История">
-            <span>История</span>
+        <div class="nav-item" data-screen="history-screen">
+            <img src="history.png" alt="История"><br>
+            <span class="nav-label">История</span>
         </div>
-        <div class="footer-btn" id="paymentsBtn">
-            <img src="payments.png" alt="Платежи">
-            <span>Платежи</span>
+        <div class="nav-item" data-screen="payments-screen">
+            <img src="payments.png" alt="Платежи"><br>
+            <span class="nav-label">Платежи</span>
         </div>
-        <div class="footer-btn" id="chatsBtn">
-            <img src="chats.png" alt="Чаты">
-            <span>Чаты</span>
+        <div class="nav-item" data-screen="chats-screen">
+            <img src="chats.png" alt="Чаты"><br>
+            <span class="nav-label">Чаты</span>
         </div>
     </div>
+</div>
 
-    <!-- Попап "Новый телефон" -->
-    <div class="popup-overlay" id="newPhonePopup">
-        <div class="popup-content">
-            <span class="popup-close" id="closeNewPhone">&times;</span>
-            <div class="popup-title">Новый телефон</div>
-            <p>Здесь будет информация о новом телефоне.</p>
-            <button class="popup-button" id="confirmNewPhone">Понятно</button>
-        </div>
+<!-- ЭКРАН: Игровой (пока пустой) -->
+<div id="game-screen" class="screen">
+    <h2 style="text-align:center; padding:50px;">ИГРОВОЙ ЭКРАН<br>(будет дальше)</h2>
+</div>
+
+<!-- Попап: Новый телефон -->
+<div class="overlay" id="piggyOverlay">
+    <div class="popup">
+        <h2>Новый телефон</h2>
+        <p>Текущая цель — собрать 45 000 ₽ на новый телефон!</p>
+        <button class="close-popup" onclick="closeOverlay('piggyOverlay')">Закрыть</button>
     </div>
+</div>
 
-    <!-- Попап "Инструкция игры" -->
-    <div class="popup-overlay" id="instructionPopup">
-        <div class="popup-content">
-            <span class="popup-close" id="closeInstruction">&times;</span>
-            <div class="popup-title">Инструкция игры</div>
-            <p>Здесь будет подробная инструкция по игре.</p>
-            <button class="popup-button" id="confirmInstruction">Понятно</button>
-        </div>
+<!-- Попап: Инструкция -->
+<div class="overlay" id="instructionOverlay">
+    <div class="popup">
+        <h2>Инструкция игры</h2>
+        <p>Здесь будет подробная инструкция, как играть с Плушиком и копить деньги.</p>
+        <button class="close-popup" onclick="closeOverlay('instructionOverlay')">Понятно</button>
     </div>
+</div>
 
-    <script>
-        // Сохранение текущего экрана в localStorage
-        function setCurrentScreen(screenName) {
-            localStorage.setItem('currentScreen', screenName);
-        }
+<script>
+// LocalStorage — имя и баланс (можно менять вручную)
+let userData = JSON.parse(localStorage.getItem('plushikUser')) || {
+    name: "Александра",
+    balance: 6000
+};
 
-        // Получение текущего экрана из localStorage
-        function getCurrentScreen() {
-            return localStorage.getItem('currentScreen') || 'заглавный';
-        }
+document.getElementById('userName').textContent = userData.name;
+document.getElementById('balance').textContent = userData.balance.toLocaleString('ru') + " ₽";
 
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentScreen = getCurrentScreen();
-            if (currentScreen !== 'заглавный') {
-                console.log('Последний экран:', currentScreen);
-            }
-        });
+// Переключение экранов
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.screen === screenId) item.classList.add('active');
+    });
+}
 
-        // Навигация
-        document.getElementById('startGameBtn').addEventListener('click', function() {
-            setCurrentScreen('игровой');
-            alert('Переход на игровой экран');
-        });
+// Навигация
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+        showScreen(item.dataset.screen);
+    });
+});
 
-        document.getElementById('instructionBtn').addEventListener('click', function() {
-            document.getElementById('instructionPopup').style.display = 'flex';
-        });
+// Кнопка START → игровой экран
+document.getElementById('startGameBtn').addEventListener('click', () => {
+    showScreen('game-screen');
+});
 
-        document.getElementById('pigBtn').addEventListener('click', function() {
-            document.getElementById('newPhonePopup').style.display = 'flex';
-        });
+// Попапы
+document.getElementById('openPiggyPopup').addEventListener('click', () => {
+    document.getElementById('piggyOverlay').style.display = 'flex';
+});
+document.getElementById('openInstruction').addEventListener('click', () => {
+    document.getElementById('instructionOverlay').style.display = 'flex';
+});
 
-        // Закрытие попапов
-        document.getElementById('closeInstruction').addEventListener('click', function() {
-            document.getElementById('instructionPopup').style.display = 'none';
-        });
+function closeOverlay(id) {
+    document.getElementById(id).style.display = 'none';
+}
 
-        document.getElementById('confirmInstruction').addEventListener('click', function() {
-            document.getElementById('instructionPopup').style.display = 'none';
-        });
-
-        document.getElementById('closeNewPhone').addEventListener('click', function() {
-            document.getElementById('newPhonePopup').style.display = 'none';
-        });
-
-        document.getElementById('confirmNewPhone').addEventListener('click', function() {
-            document.getElementById('newPhonePopup').style.display = 'none';
-        });
-
-        // Навигация по нижней панели
-        document.getElementById('homeBtn').addEventListener('click', function() {
-            setCurrentScreen('заглавный');
-            alert('Вы на главном экране');
-        });
-
-        document.getElementById('historyBtn').addEventListener('click', function() {
-            setCurrentScreen('история');
-            alert('Переход на экран истории');
-        });
-
-        document.getElementById('paymentsBtn').addEventListener('click', function() {
-            setCurrentScreen('платежи');
-            alert('Переход на экран платежей');
-        });
-
-        document.getElementById('chatsBtn').addEventListener('click', function() {
-            setCurrentScreen('чаты');
-            alert('Переход на экран чатов');
-        });
-    </script>
+// Закрытие попапа по фону
+document.querySelectorAll('.overlay').forEach(ov => {
+    ov.addEventListener('click', (e) => {
+        if (e.target === ov) ov.style.display = 'none';
+    });
+});
+</script>
 </body>
 </html>
