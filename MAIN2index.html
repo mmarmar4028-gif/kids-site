@@ -1,182 +1,405 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=375, height=812, user-scalable=no, initial-scale=1.0" />
-  <title>Заглавный экран</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровое приложение</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    body {
-      width: 375px;
-      height: 812px;
-      position: relative;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background-color: #fff;
-    }
+        body {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            position: relative;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .screen {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 375px;
-      height: 812px;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+        .main-content {
+            padding-bottom: 70px; /* Отступ для закрепленной панели */
+            position: relative;
+        }
 
-    .fixed-bottom {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 375px;
-      height: 60px; /* adjust if needed */
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: #f0f0f0;
-      z-index: 100;
-    }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
 
-    .fixed-bottom img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ff69b4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
 
-    .clickable {
-      cursor: pointer;
-    }
+        .username {
+            font-size: 18px;
+            font-weight: 600;
+        }
 
-    /* popups */
-    .popup-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+        .balance-card {
+            margin: 16px 20px;
+            padding: 16px;
+            background-color: #fff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
 
-    .popup-content {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      max-width: 300px;
-      text-align: center;
-    }
+        .balance-text {
+            font-size: 16px;
+            color: #666;
+        }
 
-    .popup-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
 
-    .popup-close {
-      margin-top: 12px;
-      color: blue;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-  </style>
+        .card-balance-icon {
+            width: 60px;
+            height: 30px;
+            background-color: #6c5ce7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .start-game-container {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            top: 225px;
+            width: 343px;
+            height: 249px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .start-game-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .kid-card-container {
+            position: absolute;
+            left: 275px;
+            right: 32px;
+            top: 120px;
+            width: 68px; /* Рассчитано как 375 - 275 - 32 = 68 */
+            height: 100px; /* Предположим высоту, можно адаптировать под реальную картинку */
+            z-index: 5;
+        }
+
+        .kid-card-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .instruction-container {
+            position: absolute;
+            left: 195px;
+            right: 20px;
+            top: calc(225px + 249px + 35px); /* START game + его высота + отступ 35px */
+            width: 160px; /* 375 - 195 - 20 = 160 */
+            height: 80px; /* Примерная высота, можно изменить под реальную картинку */
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .instruction-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .pig-container {
+            position: absolute;
+            left: 38px;
+            right: 155px;
+            bottom: 167px;
+            width: 182px;
+            height: 173px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .pig-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 375px;
+            height: 70px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .footer-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .footer-btn img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 4px;
+        }
+
+        .footer-btn span {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .popup-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .popup-close:hover {
+            color: #333;
+        }
+
+        .popup-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .popup-button:hover {
+            background-color: #5d4fc5;
+        }
+    </style>
 </head>
 <body>
-  <!-- Main screen -->
-  <div class="screen" id="main-screen">
-    <!-- Kid card -->
-    <img src="kid card.png" alt="Kid Card"
-         style="position: absolute; left: 275px; top: 120px; width: calc(375px - 275px - 32px); height: auto;">
+    <!-- Основной контент -->
+    <div class="main-content">
+        <div class="header">
+            <div class="avatar">А</div>
+            <div class="username">Александра</div>
+        </div>
 
-    <!-- Start button -->
-    <img src="start game.png" alt="Start Game"
-         class="clickable"
-         id="start-btn"
-         style="position: absolute; left: 16px; top: 225px; width: 343px; height: 249px;">
+        <div class="balance-card">
+            <div>
+                <div class="balance-text">На карте</div>
+                <div class="balance-amount">6000,00 ₽</div>
+            </div>
+            <div class="card-balance-icon">A МИР</div>
+        </div>
 
-    <!-- Instruction -->
-    <img src="instruction.png" alt="Instruction"
-         class="clickable"
-         id="instruction-btn"
-         style="position: absolute; left: 195px; top: calc(225px + 249px + 35px); width: calc(375px - 195px - 20px); height: auto;">
+        <!-- Кнопка START (кликаемая) -->
+        <div class="start-game-container" id="startGameBtn">
+            <img src="start game.png" alt="Start Game">
+        </div>
 
-    <!-- Piggy bank -->
-    <img src="pig.png" alt="Pig"
-         class="clickable"
-         id="pig-btn"
-         style="position: absolute; left: 38px; bottom: 167px; width: 182px; height: 173px;">
-  </div>
+        <!-- Карточка ребенка -->
+        <div class="kid-card-container">
+            <img src="kid card.png" alt="Kid Card">
+        </div>
 
-  <!-- Fixed bottom nav -->
-  <div class="fixed-bottom">
-    <img src="home (main).png" alt="Главная" class="clickable" id="nav-home">
-    <img src="history.png" alt="История" class="clickable" id="nav-history">
-    <img src="payments.png" alt="Платежи" class="clickable" id="nav-payments">
-    <img src="chats.png" alt="Чаты" class="clickable" id="nav-chats">
-  </div>
+        <!-- Инструкция (кликаемая) -->
+        <div class="instruction-container" id="instructionBtn">
+            <img src="instruction.png" alt="Instruction">
+        </div>
 
-  <!-- Popups -->
-  <div class="popup-overlay" id="popup-phone">
-    <div class="popup-content">
-      <div class="popup-title">Новый телефон</div>
-      <div>Это попап для нового телефона.</div>
-      <div class="popup-close" onclick="document.getElementById('popup-phone').style.display='none'">Закрыть</div>
+        <!-- Свинья (кликаемая) -->
+        <div class="pig-container" id="pigBtn">
+            <img src="pig.png" alt="Piggy Bank">
+        </div>
     </div>
-  </div>
 
-  <div class="popup-overlay" id="popup-instruction">
-    <div class="popup-content">
-      <div class="popup-title">Инструкция игры</div>
-      <div>Здесь будет инструкция к игре.</div>
-      <div class="popup-close" onclick="document.getElementById('popup-instruction').style.display='none'">Закрыть</div>
+    <!-- Закрепленная нижняя панель -->
+    <div class="fixed-footer">
+        <div class="footer-btn" id="homeBtn">
+            <img src="home (main).png" alt="Главная">
+            <span>Главный</span>
+        </div>
+        <div class="footer-btn" id="historyBtn">
+            <img src="history.png" alt="История">
+            <span>История</span>
+        </div>
+        <div class="footer-btn" id="paymentsBtn">
+            <img src="payments.png" alt="Платежи">
+            <span>Платежи</span>
+        </div>
+        <div class="footer-btn" id="chatsBtn">
+            <img src="chats.png" alt="Чаты">
+            <span>Чаты</span>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Save current screen to localStorage (for future use)
-    localStorage.setItem('currentScreen', 'main');
+    <!-- Попап "Новый телефон" -->
+    <div class="popup-overlay" id="newPhonePopup">
+        <div class="popup-content">
+            <span class="popup-close" id="closeNewPhone">&times;</span>
+            <div class="popup-title">Новый телефон</div>
+            <p>Здесь будет информация о новом телефоне.</p>
+            <button class="popup-button" id="confirmNewPhone">Понятно</button>
+        </div>
+    </div>
 
-    // Start button → go to "игровой" screen (stub)
-    document.getElementById('start-btn').addEventListener('click', () => {
-      alert('Переход на экран "игровой" (в будущем будет реализован)');
-      // In future: renderGameScreen();
-    });
+    <!-- Попап "Инструкция игры" -->
+    <div class="popup-overlay" id="instructionPopup">
+        <div class="popup-content">
+            <span class="popup-close" id="closeInstruction">&times;</span>
+            <div class="popup-title">Инструкция игры</div>
+            <p>Здесь будет подробная инструкция по игре.</p>
+            <button class="popup-button" id="confirmInstruction">Понятно</button>
+        </div>
+    </div>
 
-    // Pig click → show "новый телефон" popup
-    document.getElementById('pig-btn').addEventListener('click', () => {
-      document.getElementById('popup-phone').style.display = 'flex';
-    });
-
-    // Instruction click → show "инструкция игры" popup
-    document.getElementById('instruction-btn').addEventListener('click', () => {
-      document.getElementById('popup-instruction').style.display = 'flex';
-    });
-
-    // Navigation buttons (currently just log)
-    document.querySelectorAll('.fixed-bottom img').forEach((btn, idx) => {
-      btn.addEventListener('click', () => {
-        const names = ['главный', 'история', 'платежи', 'чаты'];
-        console.log('Clicked:', names[idx]);
-        // Later: navigate to respective screen
-      });
-    });
-
-    // Close popups on background click
-    document.querySelectorAll('.popup-overlay').forEach(overlay => {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-          overlay.style.display = 'none';
+    <script>
+        // Сохранение текущего экрана в localStorage
+        function setCurrentScreen(screenName) {
+            localStorage.setItem('currentScreen', screenName);
         }
-      });
-    });
-  </script>
+
+        // Получение текущего экрана из localStorage
+        function getCurrentScreen() {
+            return localStorage.getItem('currentScreen') || 'заглавный';
+        }
+
+        // Инициализация: проверяем, какой экран был последним
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentScreen = getCurrentScreen();
+            if (currentScreen !== 'заглавный') {
+                // Если нужно перейти на другой экран, можно добавить логику здесь
+                // Например: navigateToScreen(currentScreen);
+            }
+        });
+
+        // Навигация по кнопкам
+        document.getElementById('startGameBtn').addEventListener('click', function() {
+            setCurrentScreen('игровой');
+            // Здесь можно добавить переход на игровой экран
+            alert('Переход на игровой экран');
+            // window.location.href = 'game.html'; // если нужно перезагрузить страницу
+        });
+
+        document.getElementById('instructionBtn').addEventListener('click', function() {
+            document.getElementById('instructionPopup').style.display = 'flex';
+        });
+
+        document.getElementById('pigBtn').addEventListener('click', function() {
+            document.getElementById('newPhonePopup').style.display = 'flex';
+        });
+
+        // Закрытие попапов
+        document.getElementById('closeInstruction').addEventListener('click', function() {
+            document.getElementById('instructionPopup').style.display = 'none';
+        });
+
+        document.getElementById('confirmInstruction').addEventListener('click', function() {
+            document.getElementById('instructionPopup').style.display = 'none';
+        });
+
+        document.getElementById('closeNewPhone').addEventListener('click', function() {
+            document.getElementById('newPhonePopup').style.display = 'none';
+        });
+
+        document.getElementById('confirmNewPhone').addEventListener('click', function() {
+            document.getElementById('newPhonePopup').style.display = 'none';
+        });
+
+        // Навигация по нижней панели
+        document.getElementById('homeBtn').addEventListener('click', function() {
+            setCurrentScreen('заглавный');
+            alert('Вы на главном экране');
+        });
+
+        document.getElementById('historyBtn').addEventListener('click', function() {
+            setCurrentScreen('история');
+            alert('Переход на экран истории');
+        });
+
+        document.getElementById('paymentsBtn').addEventListener('click', function() {
+            setCurrentScreen('платежи');
+            alert('Переход на экран платежей');
+        });
+
+        document.getElementById('chatsBtn').addEventListener('click', function() {
+            setCurrentScreen('чаты');
+            alert('Переход на экран чатов');
+        });
+    </script>
 </body>
 </html>
