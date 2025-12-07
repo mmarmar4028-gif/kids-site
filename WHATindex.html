@@ -345,22 +345,26 @@
          style="position:absolute; top:760px; left:16px; border-radius:24px; cursor:pointer; z-index:30;">
 
  
-<!-- ЭКРАН: Гардероб -->
-<div id="wardrobe-screen" class="screen">
+<!-- ЭКРАН: Гардероб (полностью рабочий) -->
+<div id="wardrobe-screen" class="screen" style="display:none; background:#f9f9f9; position:relative; min-height:812px; overflow:hidden;">
 
-    <!-- Кнопка назад -->
-    <div style="position:fixed; top:16px; left:16px; font-size:18px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:12px; cursor:pointer; z-index:1000;"
+    <!-- Назад -->
+    <div style="position:fixed; top:16px; left:16px; font-size:18px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:12px; cursor:pointer; z-index:999;"
          onclick="showScreen('game-screen')">← Назад</div>
 
-    <!-- Иконка вешалки -->
+    <!-- Вешалка -->
     <div style="position:fixed; top:20px; right:20px; font-size:30px; opacity:0.6;">👕</div>
 
-    <!-- Главная картинка гардероба — строго по центру -->
-    <div style="position:absolute; top:147px; bottom:147px; left:0; right:0;">
-        <img src="wardrobe.png" style="width:375px; height:518px; display:block; margin:0 auto;">
-    </div>
+    <!-- Картинка гардероба — строго 147px сверху и снизу -->
+    <img src="wardrobe.png" 
+         style="position:absolute; 
+                top:147px; 
+                left:0; 
+                width:375px; 
+                height:518px; 
+                pointer-events:none;">
 
-    <!-- Белые круги (легко редактировать координаты) -->
+    <!-- Белые круги (кликабельные) -->
     <div style="position:absolute; top:180px; left:50px; width:50px; height:50px; background:white; border-radius:50%; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
          onclick="document.getElementById('item-hat').style.display='flex'"></div>
 
@@ -374,7 +378,7 @@
          onclick="document.getElementById('item-shoes').style.display='flex'"></div>
 
     <!-- Альфики внизу -->
-    <div style="position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:#fdf0e9; padding:14px 30px; border-radius:50px; display:flex; align-items:center; gap:12px; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,0.15);"
+    <div style="position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:#fdf0e9; padding:14px 32px; border-radius:50px; display:flex; align-items:center; gap:12px; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,0.15); z-index:99;"
          id="openAlfikiPopup">
         <span style="font-size:26px; font-weight:700;">30</span>
         <img src="Alfiki.png" width="30" height="30">
