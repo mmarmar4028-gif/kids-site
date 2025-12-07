@@ -304,23 +304,29 @@
          style="position:absolute; top:80px; left:200px; cursor:pointer; z-index:60;">
 
 
-    <!-- Мини-игры: 2 ряда + горизонтальная прокрутка ТОЛЬКО у них -->
-    <div style="position:absolute; top:470px; left:0; right:0; padding:0 16px; overflow:hidden;">
-        <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; padding-bottom:20px;">
-            <div style="display:grid; grid-template-columns: repeat(8, 150px); gap:15px 15px; width:max-content; padding:0 10px;">
-                
-                <img src="fin quiz.png"       width="150" height="123" class="mini-game" data-name="Финансовый квиз"       data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)">
-                <img src="tetris.png"         width="150" height="123" class="mini-game" data-name="Тетрис"               data-desc="Собирай линии!" onclick="openMiniGame(this)">
-                <img src="tower.png"          width="150" height="123" class="mini-game" data-name="Построй башню"         data-desc="Строй выше всех!" onclick="openMiniGame(this)">
-                <img src="3-in-a-row.png"     width="150" height="123" class="mini-game" data-name="3 в ряд"               data-desc="Собирай конфетки!" onclick="openMiniGame(this)">
-                <img src="block blust.png"    width="150" height="123" class="mini-game" data-name="Block Blust"           data-desc="Взрывай блоки!" onclick="openMiniGame(this)">
-                <img src="flying bird.png"    width="150" height="123" class="mini-game" data-name="Flying bird"           data-desc="Лети между трубами!" onclick="openMiniGame(this)">
-                <img src="chess.png"          width="150" height="123" class="mini-game" data-name="Шахматы"               data-desc="Играй в шахматы!" onclick="openMiniGame(this)">
-                <img src="tic-toe.png"        width="150" height="123" class="mini-game" data-name="Крестики-нолики"       data-desc="Классическая игра!" onclick="openMiniGame(this)">
-                
-                <!-- Можно добавлять ещё — они просто уедут вправо и будут листаться -->
+     <!-- Мини-игры: ДВА ОТДЕЛЬНЫХ РЯДА с горизонтальной прокруткой в каждом -->
+    <div style="position:absolute; top:470px; left:0; right:0; padding:0 16px;">
+        <!-- Первый ряд -->
+        <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; margin-bottom:20px;">
+            <div style="display:inline-flex; gap:15px; padding:10px 0;">
+                <img src="fin quiz.png"      width="150" height="123" class="mini-game" data-name="Финансовый квиз"   data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)">
+                <img src="tower.png"         width="150" height="123" class="mini-game" data-name="Построй башню"     data-desc="Строй самую высокую башню!" onclick="openMiniGame(this)">
+                <img src="block blust.png"   width="150" height="123" class="mini-game" data-name="Block Blust"       data-desc="Взрывай блоки!" onclick="openMiniGame(this)">
+                <img src="3-in-a-row.png"    width="150" height="123" class="mini-game" data-name="3 в ряд"           data-desc="Собирай конфетки!" onclick="openMiniGame(this)">
+                <!-- если добавишь ещё — будет листаться этот ряд -->
             </div>
         </div>
+        <!-- Второй ряд -->
+        <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;">
+            <div style="display:inline-flex; gap:15px; padding:10px 0;">
+                <img src="tetris.png"        width="150" height="123" class="mini-game" data-name="Тетрис"           data-desc="Собирай линии!" onclick="openMiniGame(this)">
+                <img src="flying bird.png"   width="150" height="123" class="mini-game" data-name="Flying bird"       data-desc="Лети между трубами!" onclick="openMiniGame(this)">
+                <img src="chess.png"         width="150" height="123" class="mini-game" data-name="Шахматы"           data-desc="Развивай мышление!" onclick="openMiniGame(this)">
+                <img src="tic-toe.png"       width="150" height="123" class="mini-game" data-name="Крестики-нолики"   data-desc="Классика на двоих!" onclick="openMiniGame(this)">
+                <!-- сюда тоже можно добавлять новые игры -->
+            </div>
+        </div>
+
     </div>
 
     <!-- Видео-уроки -->
