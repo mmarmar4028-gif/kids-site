@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Мои задания</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f9f9fc;
+      width: 375px;
+      min-height: 812px;
+      margin: 0 auto;
+      position: relative;
+      overflow-y: auto; /* вертикальный скролл, если контента много */
+    }
+
+    /* Кнопка Назад */
+    .back-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 100;
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      background: #f0f0f0;
+      padding: 8px 12px;
+      border-radius: 12px;
+    }
+
+    /* Картинка "tasks.png" по центру сверху */
+    .tasks-header {
+      text-align: center;
+      padding: 63px 0 20px;
+    }
+    .tasks-header img {
+      width: 367px;
+      height: 46px;
+    }
+
+    /* Контент с категориями заданий */
+    .content {
+      padding: 0 16px 100px;
+    }
+
+    /* Каждая категория заданий */
+    .category {
+      margin-bottom: 40px;
+    }
+    .category h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    /* Горизонтальный скролл для карточек заданий */
+    .tasks-scroll {
+      overflow-x: auto;
+      display: flex;
+      gap: 16px;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .task-card {
+      min-width: 240px;
+      padding: 16px;
+      background: linear-gradient(135deg, #ffe4e1, #ffdab9);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .task-card:active { transform: scale(0.98); }
+    .task-card img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+    }
+    .task-card p {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .task-card span {
+      display: block;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Попап для задания "Нужно выполнить" */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 200;
+    }
+    .overlay.visible { opacity: 1; pointer-events: auto; }
+    .popup {
+      background: white;
+      padding: 32px 24px;
+      border-radius: 24px;
+      text-align: center;
+      max-width: 320px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .popup p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 24px;
+    }
+    .popup button {
+      display: block;
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 12px;
+      background: #ff4b5f;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Попап "Пока в разработке" */
+    #dev-popup button { background: #ff6b5f; }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка Назад -->
+  <div class="back-btn" onclick="window.location.href='game_screen.html'">
+    ← Назад
+  </div>
+
+  <!-- Картинка "tasks.png" по центру сверху -->
+  <div class="tasks-header">
+    <img src="tasks.png" alt="Мои задания">
+  </div>
+
+  <div class="content">
+
+    <!-- Категория "Нужно выполнить" — горизонтальный скролл -->
+    <div class="category">
+      <h2>Нужно выполнить</h2>
+      <div class="tasks-scroll">
+        <!-- Карточка 1 -->
+        <div class="task-card" onclick="document.getElementById('task-popup').classList.add('visible')">
+          <img src="icon1.png" alt="">
+          <p>Помыть полы</p>
+          <span>100 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
+
+        <!-- Карточка 2 -->
+        <div class="task-card" onclick="document.getElementById('task-popup').classList.add('visible')">
+          <img src="icon2.png" alt="">
+          <p>Выгулять собаку</p>
+          <span>100 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
+
+        <!-- Добавляй новые карточки сюда — просто копируй блок -->
+      </div>
+    </div>
+
+    <!-- Категория "Ждут проверки" — горизонтальный скролл -->
+    <div class="category">
+      <h2>Ждут проверки</h2>
+      <div class="tasks-scroll">
+        <!-- Карточка -->
+        <div class="task-card">
+          <img src="icon3.png" alt="">
+          <p>Помыть посуду</p>
+          <span>100 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
+
+        <!-- Добавляй новые -->
+      </div>
+    </div>
+
+    <!-- Категория "Выполненные задания" — горизонтальный скролл -->
+    <div class="category">
+      <h2>Выполненные задания</h2>
+      <div class="tasks-scroll">
+        <!-- Карточка -->
+        <div class="task-card">
+          <img src="icon4.png" alt="">
+          <p>Убрать комнату</p>
+          <span>100 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
+
+        <!-- Добавляй новые -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Попап для задания "Нужно выполнить" -->
+  <div class="overlay" id="task-popup">
+    <div class="popup">
+      <p>Краткое описание задания:<br>Помыть полы в кухне и коридоре</p>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Добавить фотографию</button>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Отправить на проверку</button>
+    </div>
+  </div>
+
+  <!-- Попап "Пока в разработке" -->
+  <div class="overlay" id="dev-popup">
+    <div class="popup">
+      <p>Пока в разработке</p>
+      <button onclick="document.getElementById('dev-popup').classList.remove('visible')">Понятно</button>
+    </div>
+  </div>
+
+<script>
+  // Закрытие попапов по клику за пределами
+  document.querySelectorAll('.overlay').forEach(ov => {
+    ov.addEventListener('click', e => {
+      if (e.target === ov) ov.classList.remove('visible');
+    });
+  });
+</script>
+
+</body>
+</html>
