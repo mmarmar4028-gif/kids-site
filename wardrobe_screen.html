@@ -171,13 +171,18 @@
     <div class="wardrobe">
       <div id="pushik-container">
         <div class="pushik-frame">
-          <model-viewer
+        <model-viewer
   id="pushik-model"
-  src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-  alt="Астронавт"
+  src="pushik.glb"
+  alt="Пушик"
   camera-controls
   auto-rotate
+  rotation-per-second="25deg"
+  shadow-intensity="1"
+  exposure="1.0"
   background-color="#ffffff"
+  camera-orbit="0deg 80deg 105%"
+  field-of-view="30deg"
   style="width:100%; height:100%;">
 </model-viewer>
         </div>
