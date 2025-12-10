@@ -112,15 +112,15 @@
     <div class="scroll-container">
 
         
-<!-- Шапка: только кнопка Назад + картинка по центру, без лишнего места -->
-<div style="height:68px; background:white; position:relative; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
-  <!-- Кнопка Назад -->
-  <div style="position:absolute; left:16px; font-size:17px; font-weight:600; color:#333; cursor:pointer;">
-    ← Назад
-  </div>
+<!-- Шапка: кнопка Назад + картинка чуть ниже центра -->
+<div style="height:78px; background:white; position:relative; box-shadow:0 2px 10px rgba(0,0,0,0.08); text-align:center; padding-top:12px;">
   
-  <!-- Картинка по центру (чуть меньше и аккуратнее -->
-  <img src="video-lessons.png" style="height:40px; top: 40px; pointer-events:none;">
+  <!-- Кнопка Назад (слева, по центру по высоте) -->
+  <div style="position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:17px; font-weight:600; color:#333; cursor:pointer;"
+       onclick="window.location.href='game_screen.html'">Назад</div>
+
+  <!-- Картинка по центру, но смещена вниз -->
+  <img src="video-lessons.png" style="height:44px; margin-top:8px; pointer-events:none;">
 </div>
        
   
