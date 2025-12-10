@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Тест Пушика</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin:0; background:#f0f0f0; display:flex; justify-content:center; align-items:center; height:100vh; }
+    model-viewer { width:380px; height:600px; background:#ffffff; }
+  </style>
+</head>
+<body>
+
+<model-viewer
+  src="puhik.glb"
+  alt="Пушик"
+  auto-rotate
+  camera-controls
+  shadow-intensity="1"
+  exposure="1"
+  background-color="#ffffff">
+</model-viewer>
+
+</body>
+</html>
