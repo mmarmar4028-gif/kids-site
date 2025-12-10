@@ -174,6 +174,51 @@
         font-size: 16px;
         cursor: pointer;
     }
+
+   .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 84px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 375px;
+    z-index: 100;
+    padding-bottom: 10px; /* чуть приподнимает, чтобы не прилипало к краю */
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.nav-item img {
+    width: 28px;
+    height: 28px;
+}
+
+.nav-label {
+    font-size: 10px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.nav-item.active .nav-label {
+    color: #000;
+    font-weight: 600;
+}
+
+/* Активная иконка чуть ярче (по желанию) */
+.nav-item.active img {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(98%) saturate(7498%) hue-rotate(294deg) brightness(99%) contrast(101%); /* фиолетовый как у аватарки */
+}
 </style>
 </head>
 <body>
