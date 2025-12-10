@@ -6,15 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Детское приложение</title>
 
-   <style>
-    /* Чтобы картинка гардероба точно отображалась на весь блок */
-    #wardrobe-screen {
-        background:#f9f9f9;
-        position:relative;
-        min-height:812px;
-        overflow:hidden;
-    }
-</style>
    
 <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -206,7 +197,7 @@
         <img src="kid card.png" class="kid-card" alt="карточка">
 
         <!-- Кнопка START -->
-        <div class="start-btn" id="startGameBtn">
+        <div class="start-btn" id="startGameBtn" onclick="window.location.href = 'game_screen.html';">
             <img src="start game.png" alt="START">
         </div>
 
@@ -255,13 +246,13 @@
         <div class="nav-item active" data-screen="main-screen">
             <img src="home (main).png" alt="Главная"><span class="nav-label">Главный</span>
         </div>
-        <div class="nav-item" data-screen="history-screen">
+        <div class="nav-item" data-screen="history-screen" onclick="alert('Скоро будет доступно!'); return false;">
             <img src="history.png" alt="История"><span class="nav-label">История</span>
         </div>
-        <div class="nav-item" data-screen="payments-screen">
+        <div class="nav-item" data-screen="payments-screen" onclick="alert('Скоро будет доступно!'); return false;">
             <img src="payments.png" alt="Платежи"><span class="nav-label">Платежи</span>
         </div>
-        <div class="nav-item" data-screen="chats-screen">
+        <div class="nav-item" data-screen="chats-screen" onclick="alert('Скоро будет доступно!'); return false;">
             <img src="chats.png" alt="Чаты"><span class="nav-label">Чаты</span>
         </div>
     </div>
@@ -316,7 +307,6 @@ function showScreen(id) {
 document.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', () => showScreen(el.dataset.screen)));
 
 // Клик по кнопкам
-document.getElementById('startGameBtn').addEventListener('click', () => showScreen('game-screen'));
 document.getElementById('openPiggyPopup').addEventListener('click', () => document.getElementById('piggyOverlay').style.display = 'flex');
 document.getElementById('openInstruction').addEventListener('click', () => document.getElementById('instructionOverlay').style.display = 'flex');
 document.getElementById('openLostCard').addEventListener('click', () => document.getElementById('lostCardOverlay').style.display = 'flex');
