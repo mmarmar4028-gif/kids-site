@@ -1,145 +1,77 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Детское приложение</title>
-    
-    
-    <style>
+<title>Плушик</title>
+<style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    html, body {
-        height: 100%;
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
-    }
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         background: #f5f7ff;
-        width: 375px;
-        min-height: 812px;
+        width: 375px; min-height: 812px;
         margin: 0 auto;
-        position: relative;
+        overflow-x: hidden;
     }
+    .scroll-container { padding: 0 16px; padding-top: 20px; }
+    .header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .avatar { width: 44px; height: 44px; background: #e86aff; border-radius: 50%; color: white; font-size: 24px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+    .balance { background: white; border-radius: 16px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 40px; }
+    .start-btn { width: 343px; height: 249px; margin: 0 auto 40px; cursor: pointer; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(255,0,0,0.25); }
+    .start-btn img { width: 100%; height: 100%; object-fit: cover; }
+    .nav {
+        position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+        width: 375px; height: 84px; background: white; border-top: 1px solid #eee;
+        display: flex; justify-content: space-around; align-items: center; z-index: 100;
+    }
+    .nav-item img { width: 34px; height: 34px; }
+    .nav-label { font-size: 10px; color: #999; margin-top: 4px; }
+    .nav-item.active .nav-label { color: #000; font-weight: 600; }
+</style>
+</head>
+<body>
 
-    .screen { display: none; }
-    .screen.active { display: block; }
-        
-         /* Игровой экран — теперь прокручивается */
-<div id="game-screen" class="screen" style="background:#f8f9ff; height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative;">
-
-    <!-- Кнопка "Назад" - слева сверху -->
-    <div style="position:absolute; top:16px; left:16px; z-index:100; cursor:pointer; font-size:18px; font-weight:600; color:#333;" onclick="showScreen('main-screen')">
-        ← Назад
+<div class="scroll-container">
+    <div class="header">
+        <div class="avatar">А</div>
+        <div id="userName" style="font-size:18px; font-weight:600;">Александра</div>
     </div>
 
-    /* Шапка с аватаркой и альфиками */
-    <div style="position:absolute; top:46px; left:16px; right:16px; display:flex; align-items:center; justify-content:space-between; z-index:50;">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <div style="width:44px; height:44px; background:#e86aff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:20px;">П</div>
-            <span style="font-size:18px; font-weight:600;">Пушик Васек</span>
+    <div class="balance">
+        <div>
+            <div style="font-size:14px; color:#888;">На карте</div>
+            <div id="balance" style="font-size:24px; font-weight:700;">6 000,00 ₽</div>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px; background:rgba(255,255,255,0.8); border-radius:20px;" id="openAlfikiPopup">
-            <span style="font-weight:600; font-size:18px;">30</span>
-            <img src="Alfiki.png" width="24" height="24">
-            <span style="font-size:22px; color:#ff6b35;">+</span>
-        </div>
+        <img src="mir-card-mini.png" width="80" height="50">
     </div>
 
- /* Пргресс уровня */
-    <div style="position:absolute; top:340px; left:16px; right:16px; cursor:pointer; padding:16px; background:rgba(255,255,255,0.9); border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,0.1); z-index:30;" id="openLevelPopup">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <span style="font-weight:700; font-size:20px;">Ур.1</span>
-            <div style="flex:1; height:14px; background:#e5e5e5; border-radius:7px; overflow:hidden;">
-                <div style="width:55%; height:100%; background:linear-gradient(90deg, #7cc47c, #4CAF50); border-radius:7px;"></div>
-            </div>
-            <span style="font-size:14px; color:#666; font-weight:500;">55/120XP</span>
-        </div>
+    <img src="kid card.png" style="position:absolute; top:96px; right:32px; width:68px;">
+
+    <div class="start-btn" onclick="location.href='game.html'">
+        <img src="start game.png" alt="START">
     </div>
 
-         /* Задания родителей*/
-    <img src="tasks.png" width="340" height="46" onclick="showScreen('tasks-screen')" 
-         style="position:absolute; top:410px; left:16px; border-radius:24px; cursor:pointer; z-index:20;">
-
-/* Пушик + речевое облачко — теперь весь блок кликабельный и ведёт в гардероб*/
-<div style="position:relative; text-align:center; margin:75px 0; cursor:pointer;" onclick="showScreen('wardrobe-screen')">
-    <img src="PUSH.png" width="160" height="241">
-    <div style="display:inline-block; background:white; top:170px; left:28%; padding:12px 24px; border-radius:30px; box-shadow:0 4px 15px rgba(0,0,0,0.1); font-size:18px; font-weight:600; margin-bottom:30px;">
-        Давай поиграем
+    <div style="display:flex; justify-content:space-between; gap:16px; margin-top:40px;">
+        <img src="lost card.png" style="width:160px; height:160px; border-radius:22px; box-shadow:0 6px 16px rgba(0,0,0,0.12); cursor:pointer;">
+        <img src="instruction.png" style="width:160px; cursor:pointer;">
     </div>
+
+    <div style="height:300px;"></div>
 </div>
 
-   
-     /*Мини-игры: ДВА ОТДЕЛЬНЫХ РЯДА с горизонтальной прокруткой в каждом*/
-    <div style="position:absolute; top:460px; left:0; right:0; padding:0 16px;">
-        /*Первый ряд*/
-        <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; margin-bottom:1px;">
-            <div style="display:inline-flex; gap:15px; padding:10px 0;">
-                <img src="fin quiz.png"      width="150" height="123" class="mini-game" data-name="Финансовый квиз"   data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)">
-                <img src="tower.png"         width="150" height="123" class="mini-game" data-name="Построй башню"     data-desc="Строй самую высокую башню!" onclick="openMiniGame(this)">
-                <img src="block blust.png"   width="150" height="123" class="mini-game" data-name="Block Blust"       data-desc="Взрывай блоки!" onclick="openMiniGame(this)">
-                <img src="3-in-a-row.png"    width="150" height="123" class="mini-game" data-name="3 в ряд"           data-desc="Собирай конфетки!" onclick="openMiniGame(this)">
-                <!-- если добавишь ещё — будет листаться этот ряд -->
-            </div>
-        </div>
-        /*Второй ряд*/
-        <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch;">
-            <div style="display:inline-flex; gap:15px; padding:10px 0;">
-                <img src="tetris.png"        width="150" height="123" class="mini-game" data-name="Тетрис"           data-desc="Собирай линии!" onclick="openMiniGame(this)">
-                <img src="flying bird.png"   width="150" height="123" class="mini-game" data-name="Flying bird"       data-desc="Лети между трубами!" onclick="openMiniGame(this)">
-                <img src="chess.png"         width="150" height="123" class="mini-game" data-name="Шахматы"           data-desc="Развивай мышление!" onclick="openMiniGame(this)">
-                <img src="tic-toe.png"       width="150" height="123" class="mini-game" data-name="Крестики-нолики"   data-desc="Классика на двоих!" onclick="openMiniGame(this)">
-                <!-- сюда тоже можно добавлять новые игры -->
-            </div>
-        </div>
+<img src="pig.png" style="position:fixed; bottom:190px; left:16px; width:182px; height:173px; cursor:pointer;">
 
-    </div>
-
-    /*Видео-уроки*/
-    <img src="video-lessons.png" width="340" height="46" onclick="showScreen('video-screen')" 
-         style="position:absolute; top:760px; left:16px; border-radius:24px; cursor:pointer; z-index:30;">
-
- 
-/*ЭКРАН: Гардероб (полностью рабочий)*/
-<div id="wardrobe-screen" class="screen" style="display:none; background:#f9f9f9; position:relative; min-height:812px; overflow:hidden;">
-
-    <!-- Назад -->
-    <div style="position:fixed; top:16px; left:16px; font-size:18px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:12px; cursor:pointer; z-index:999;"
-         onclick="showScreen('game-screen')">← Назад</div>
-
-    /*Вешалка/*/
-    <div style="position:fixed; top:20px; right:20px; font-size:30px; opacity:0.6;">👕</div>
-
-    /*Картинка гардероба — строго 147px сверху и снизу/*/
-    <img src="wardrobe.png" 
-         style="position:absolute; 
-                top:147px; 
-                left:0; 
-                width:375px; 
-                height:518px; 
-                pointer-events:none;">
-
-    /* Белые круги (кликабельные) /*/
-    <div style="position:absolute; top:180px; left:50px; width:50px; height:50px; background:white; border-radius:50%; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
-         onclick="document.getElementById('item-hat').style.display='flex'"></div>
-
-    <div style="position:absolute; top:320px; left:42px; width:50px; height:50px; background:white; border-radius:50%; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
-         onclick="document.getElementById('item-jacket').style.display='flex'"></div>
-
-    <div style="position:absolute; top:480px; left:70px; width:50px; height:50px; background:white; border-radius:50%; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
-         onclick="document.getElementById('item-sneakers').style.display='flex'"></div>
-
-    <div style="position:absolute; top:480px; right:70px; width:50px; height:50px; background:white; border-radius:50%; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
-         onclick="document.getElementById('item-shoes').style.display='flex'"></div>
-
-    /*Альфики внизу/*/
-    <div style="position:fixed; bottom:100px; left:50%; transform:translateX(-50%); background:#fdf0e9; padding:14px 32px; border-radius:50px; display:flex; align-items:center; gap:12px; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,0.15); z-index:99;"
-         id="openAlfikiPopup">
-        <span style="font-size:26px; font-weight:700;">30</span>
-        <img src="Alfiki.png" width="30" height="30">
-        <span style="font-size:32px; color:#ff6b9d;">+</span>
-    </div>
-
+<div class="nav">
+    <div class="nav-item active"><img src="home (main).png"><span class="nav-label">Главный</span></div>
+    <div class="nav-item"><img src="history.png"><span class="nav-label">История</span></div>
+    <div class="nav-item"><img src="payments.png"><span class="nav-label">Платежи</span></div>
+    <div class="nav-item"><img src="chats.png"><span class="nav-label">Чаты</span></div>
 </div>
-</div>
+
+<script>
+    let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
+    document.getElementById('userName').textContent = userData.name;
+    document.getElementById('balance').textContent = userData.balance.toLocaleString('ru-RU') + ' ₽';
+</script>
+</body>
+</html>
