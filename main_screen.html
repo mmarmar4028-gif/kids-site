@@ -314,7 +314,6 @@ document.getElementById('balance').textContent = userData.balance.toLocaleString
 function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.screen === id));
 }
 document.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', () => showScreen(el.dataset.screen)));
 
