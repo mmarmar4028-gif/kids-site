@@ -296,77 +296,7 @@
     </div>
 </div>
 
-   <!-- Попап: Информация об уровне -->
-<div class="overlay" id="levelOverlay">
-    <div class="popup">
-        <h2>Уровень 1 → 2</h2>
-        <p>Собери ещё <b>65 XP</b>, чтобы перейти на следующий уровень!<br><br>
-           За прохождение получишь:<br>
-           • 50 альфиков<br>
-           • Новую одежду для Пушика</p>
-        <button class="close-popup" onclick="closeOverlay('levelOverlay')">Понятно</button>
-    </div>
-</div>
 
-<!-- Попап: Мини-игра -->
-<div class="overlay" id="miniGameOverlay">
-    <div class="popup">
-        <h2 id="gameTitle">Игра</h2>
-        <p id="gameDesc" style="margin:20px 0;">Описание игры...</p>
-        <button class="close-popup" style="background:#4CAF50;">Играть</button>
-        <button class="close-popup" onclick="closeOverlay('miniGameOverlay')" style="margin-top:10px; background:#999;">Отмена</button>
-    </div>
-</div>
-
-<!-- Попап: Пополнить альфики (заглушка) -->
-<div class="overlay" id="alfikiOverlay">
-    <div class="popup">
-        <h2>Пополнить альфики</h2>
-        <p>Скоро здесь можно будет купить альфики за реальные деньги или получить от родителей</p>
-        <button class="close-popup" onclick="closeOverlay('alfikiOverlay')">Понятно</button>
-    </div>
-</div>
-
-   
-   <!-- Pop-up: Шляпа -->
-<div class="overlay" id="item-hat">
-    <div class="popup">
-        <h2>Шляпа гангстера</h2>
-        <img src="Pushik.png" width="120" style="margin:20px 0;">
-        <p>Разблокируется на <b>5 уровне</b></p>
-        <button class="close-popup" onclick="closeOverlay('item-hat')">Закрыть</button>
-    </div>
-</div>
-
-<!-- Pop-up: Пиджак -->
-<div class="overlay" id="item-jacket">
-    <div class="popup">
-        <h2>Стильный пиджак</h2>
-        <img src="Pushik.png" width="120" style="margin:20px 0;">
-        <p>Разблокируется на <b>10 уровне</b></p>
-        <button class="close-popup" onclick="closeOverlay('item-jacket')">Закрыть</button>
-    </div>
-</div>
-
-<!-- Pop-up: Кроссовки -->
-<div class="overlay" id="item-sneakers">
-    <div class="popup">
-        <h2>Крутые кроссовки</h2>
-        <img src="Pushik.png" width="120" style="margin:20px 0;">
-        <p>Разблокируется на <b>17 уровне</b></p>
-        <button class="close-popup" onclick="closeOverlay('item-sneakers')">Закрыть</button>
-    </div>
-</div>
-
-<!-- Pop-up: Кеды -->
-<div class="overlay" id="item-shoes">
-    <div class="popup">
-        <h2>Классические кеды</h2>
-        <img src="Pushik.png" width="120" style="margin:20px 0;">
-        <p>Разблокируется на <b>10 уровне</b><br>Стоимость: 150 альфиков</p>
-        <button class="close-popup" onclick="closeOverlay('item-shoes')">Закрыть</button>
-    </div>
-</div>
 
 
 
@@ -398,21 +328,7 @@ document.getElementById('openLevelPopup')?.addEventListener('click', () => {
     document.getElementById('levelOverlay').style.display = 'flex';
 });
 
-// Открытие попапа мини-игры
-function openMiniGame(img) {
-    document.getElementById('gameTitle').textContent = img.dataset.name;
-    document.getElementById('gameDesc').textContent = img.dataset.desc;
-    document.getElementById('miniGameOverlay').style.display = 'flex';
-}
 
-// Пополнить альфики
-document.getElementById('openAlfikiPopup')?.addEventListener('click', () => {
-    document.getElementById('alfikiOverlay').style.display = 'flex';
-});
-
-// Гардероб (пока заглушка)
-document.getElementById('openWardrobe')?.addEventListener('click', () => {
-    alert('Гардероб Пушика — скоро будет!');
 });
    
 </script>
