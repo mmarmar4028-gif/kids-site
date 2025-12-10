@@ -62,15 +62,6 @@
       color: #333;
       line-height: 1.5;
     }
-
-    /* Кнопка "Проверить знания" — точные размеры и отступы */
-    .quiz-btn {
-      position: fixed;
-      left: 14px;
-      right: 13px;
-      bottom: 244px;   /* точно по твоему макету */
-      z-index: 50;
-    }
     .quiz-btn img {
       width: 100%;
       height: auto;
@@ -143,10 +134,12 @@
     Сложность: начинающий
   </div>
 
-  <!-- Кнопка "Проверить знания" — точные отступы -->
-  <div class="quiz-btn">
-    <img src="checkknowledge.png" alt="Проверить знания в квизе">
-  </div>
+ <!-- Кнопка "Проверить знания" — теперь ниже всего и правильного размера -->
+<div style="width:348px; margin:40px auto 100px; text-align:center;">
+  <img src="checkknowledge.png" 
+       style="width:348px; height:50px; cursor:pointer; border-radius:20px; box-shadow:0 8px 20px rgba(0,0,0,0.15);"
+       alt="Проверить знания в квизе">
+</div>
 
   <!-- Попап "Видео будет позже" -->
   <div class="overlay" id="soon-overlay">
