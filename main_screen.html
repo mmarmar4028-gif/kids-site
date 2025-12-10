@@ -198,21 +198,25 @@
     cursor: pointer;
     flex: 1;
 }
-
+/* Убираем любой цветной фильтр у иконок */
 .nav-item img {
     width: 28px;
     height: 28px;
+    filter: none !important; /* на всякий случай, чтобы точно не было фильтра */
 }
 
+/* Только текст становится жирным у активной кнопки */
+.nav-item.active .nav-label {
+    color: #000;
+    font-weight: 700; /* жирнее */
+}
+
+/* У обычных кнопок текст серый и обычный */
 .nav-label {
     font-size: 10px;
     color: #999;
-    margin-top: 2px;
-}
-
-.nav-item.active .nav-label {
-    color: #000;
-    font-weight: 600;
+    margin-top: 4px;
+    font-weight: 400;
 }
 
 </style>
