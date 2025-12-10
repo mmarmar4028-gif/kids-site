@@ -570,7 +570,7 @@
         <div id="pushik-3d-container">
           <div class="pushik-frame">
             <div class="pushik-3d-wrap" id="pushik-wrap">
-             <model-viewer
+           <model-viewer
   id="pushik-model"
   src="pushik.glb"
   alt="Пушик"
@@ -579,9 +579,11 @@
   ar
   loading="lazy"
   shadow-intensity="1"
-  exposure="1.1"
-  interaction-prompt="none"
-></model-viewer>
+  exposure="1.0"
+  camera-orbit="0deg 75deg 105%"
+  field-of-view="30deg"
+  style="width:100%; height:100%; background:transparent;">
+</model-viewer>
               
             </div>
           </div>
@@ -749,7 +751,6 @@
           }
         });
       });
-
       document.addEventListener("click", function (event) {
         const isHotspot = event.target.closest(".hotspot");
         const isTooltip = event.target.closest(".tooltip");
