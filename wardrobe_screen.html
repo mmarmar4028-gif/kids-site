@@ -570,20 +570,19 @@
         <div id="pushik-3d-container">
           <div class="pushik-frame">
             <div class="pushik-3d-wrap" id="pushik-wrap">
-              <model-viewer
-                id="pushik-model"
-                src="puhik (1).glb" 
-                alt="Пушик"
-                camera-controls
-                auto-rotate
-                rotation-per-second="30deg"
-                disable-zoom
-                shadow-intensity="1"
-                environment-image="neutral"
-                exposure="1.1"
-                interaction-prompt="drag-to-rotate"
-              >
-              </model-viewer>
+             <model-viewer
+  id="pushik-model"
+  src="pushik.glb"
+  alt="Пушик"
+  camera-controls
+  auto-rotate
+  ar
+  loading="lazy"
+  shadow-intensity="1"
+  exposure="1.1"
+  interaction-prompt="none"
+></model-viewer>
+              
             </div>
           </div>
         </div>
@@ -661,10 +660,7 @@
   </div>
     <script>
 
-      // LocalStorage
-let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
-document.getElementById('userName').textContent = userData.name;
-document.getElementById('balance').textContent = userData.balance.toLocaleString('ru-RU') + ' ₽';
+  
       
     document.addEventListener("DOMContentLoaded", function () {
       const backBtn = document.getElementById("btn-back");
@@ -783,9 +779,9 @@ document.getElementById('balance').textContent = userData.balance.toLocaleString
       /* Смена образов (пока все три — один и тот же glb) */
 
       const outfits = [
-        { name: "базовый",     src: "puhik (1).glb" },
-        { name: "повседневный",src: "puhik (1).glb" },
-        { name: "праздничный", src: "puhik (1).glb" },
+        { name: "базовый",     src: "puhik.glb" },
+        { name: "повседневный",src: "puhik.glb" },
+        { name: "праздничный", src: "puhik.glb" },
       ];
 
       let currentOutfitIndex = 0;
