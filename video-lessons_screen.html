@@ -159,9 +159,9 @@ function showScreen(id) {
 }
 
 // Клик по кнопкам
-document.getElementById('openvideo1').addEventListener('click', () => document.getElementById('video1.html').style.display = 'flex');
-document.getElementById('openvideo2').addEventListener('click', () => document.getElementById('video2.html').style.display = 'flex');
-document.getElementById('openvideo3').addEventListener('click', () => document.getElementById('video3.html').style.display = 'flex');
+document.getElementById('openvideo1').addEventListener('click', () => document.getElementById('lesson1.html').style.display = 'flex');
+document.getElementById('openvideo2').addEventListener('click', () => document.getElementById('lesson2.html').style.display = 'flex');
+document.getElementById('openvideo3').addEventListener('click', () => document.getElementById('lesson3.html').style.display = 'flex');
 
 function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
 document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click', e => { if (e.target === ov) ov.style.display = 'none'; }));
