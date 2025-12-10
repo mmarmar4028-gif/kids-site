@@ -181,18 +181,18 @@
 
     <!-- Кнопка "Играть" — красный треугольник, повёрнут вправо + текст внутри -->
     <div style="position:relative; display:inline-block; cursor:pointer;" 
-         onclick="alert('Пока в разработке. Возвращайтесь позже!')">
+         onclick="document.getElementById('dev-popup').classList.add('visible')">
       
       <!-- Красный треугольник, повёрнут на 90° вправо -->
       <div style="width:0; height:0; 
-           border-top: 32px solid transparent;
-           border-bottom: 32px solid transparent;
-           border-left: 56px solid #ff3b30;
+           border-top: 46px solid transparent;
+           border-bottom: 46px solid transparent;
+           border-left: 78px solid #ff3b30;
            margin:0 auto;">
       </div>
 
       <!-- Надпись "Играть" внутри треугольника -->
-      <div style="position:absolute; top:50%; left:12px; transform:translateY(-50%);
+      <div style="position:absolute; top:50%; left:18px; transform:translateY(-50%);
                   color:white; font-size:24px; font-weight:800; 
                   text-shadow:0 2px 6px rgba(0,0,0,0.4); pointer-events:none;">
         Играть
@@ -201,7 +201,21 @@
 
   </div>
 </div>
-  
+  <!-- Поп-ап "Игра в разработке" -->
+<div class="overlay" id="dev-popup">
+  <div style="background:white; padding:32px 24px; border-radius:28px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.3);">
+    <h3 style="font-size:19px; font-weight:700; margin-bottom:12px; color:#333;">
+      Игра в разработке...
+    </h3>
+    <p style="font-size:16px; color:#666; margin-bottom:24px; line-height:1.5;">
+      Скоро здесь будет квиз!<br>Возвращайтесь позже!
+    </p>
+    <button style="background:#ff4b5f; color:white; border:none; padding:12px 40px; border-radius:30px; font-size:16px; font-weight:600; cursor:pointer;"
+            onclick="document.getElementById('dev-popup').classList.remove('visible')">
+      Понятно
+    </button>
+  </div>
+</div>
   <script>
   document.getElementById('quiz-popup')?.addEventListener('click', function(e) {
     if (e.target === this) this.classList.remove('visible');
