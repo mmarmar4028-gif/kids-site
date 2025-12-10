@@ -246,15 +246,15 @@
         <div class="nav-item active" data-screen="main-screen">
             <img src="home (main).png" alt="Главная"><span class="nav-label">Главный</span>
         </div>
-        <div class="nav-item" data-screen="history-screen" onclick="alert('Скоро будет доступно!'); return false;">
-            <img src="history.png" alt="История"><span class="nav-label">История</span>
-        </div>
-        <div class="nav-item" data-screen="payments-screen" onclick="alert('Скоро будет доступно!'); return false;">
-            <img src="payments.png" alt="Платежи"><span class="nav-label">Платежи</span>
-        </div>
-        <div class="nav-item" data-screen="chats-screen" onclick="alert('Скоро будет доступно!'); return false;">
-            <img src="chats.png" alt="Чаты"><span class="nav-label">Чаты</span>
-        </div>
+        <div class="nav-item" onclick="document.getElementById('comingSoonOverlay').style.display='flex'">
+    <img src="history.png" alt="История"><span class="nav-label">История</span>
+</div>
+<div class="nav-item" onclick="document.getElementById('comingSoonOverlay').style.display='flex'">
+    <img src="payments.png" alt="Платежи"><span class="nav-label">Платежи</span>
+</div>
+<div class="nav-item" onclick="document.getElementById('comingSoonOverlay').style.display='flex'">
+    <img src="chats.png" alt="Чаты"><span class="nav-label">Чаты</span>
+</div>
     </div>
 </div>
 
@@ -286,7 +286,15 @@
         <button class="close-popup" onclick="closeOverlay('lostCardOverlay')">Понятно</button>
     </div>
 </div>
-
+   
+<!-- Попап-заглушка "Пока в разработке" -->
+<div class="overlay" id="comingSoonOverlay">
+    <div class="popup">
+        <h2>Скоро здесь будет круто! </h2>
+        <p>Функция в разработке.<br>Следи за обновлениями!</p>
+        <button class="close-popup" onclick="closeOverlay('comingSoonOverlay')">Понятно</button>
+    </div>
+</div>
 
 
 
