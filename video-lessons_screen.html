@@ -129,13 +129,19 @@
             <div class="avatar">А</div>
             <div class="user-name" id="userName">Александра</div>
         </div>
-  <!-- Шапка с красной плашкой -->
-  <div class="header">
-    <div class="back-btn" onclick="window.location.href='game_screen.html'">Назад</div>
-    <div class="title-bg"></div>
-    <img src="video-lessons.png">
-    <div class="title">Видео-уроки</div>
-  </div>
+
+ <!-- Красная шапка с картинкой по центру -->
+<div style="position:relative; height:110px; background:linear-gradient(135deg,#ff4b5f,#ff6b5f); border-radius:0 0 24px 24px; text-align:center; padding-top:20px; box-shadow:0 4px 15px rgba(255,75,95,0.3);">
+  <!-- Кнопка Назад -->
+  <div style="position:absolute; top:16px; left:16px; background:rgba(255,255,255,0.25); color:white; padding:8px 14px; border-radius:12px; font-size:16px; cursor:pointer;" 
+       onclick="window.location.href='game_screen.html'">Назад</div>
+
+  <!-- Картинка по центру -->
+  <img src="video-lessons.png" style="width:180px; margin-bottom:8px;">
+
+  <!-- Надпись под картинкой -->
+  <div style="color:white; font-size:18px; font-weight:600;">Видео-уроки</div>
+</div>
 
   <div class="content">
     <h1>Доступные к просмотру видео</h1>
