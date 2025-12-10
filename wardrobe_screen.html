@@ -5,803 +5,220 @@
   <title>Гардероб Пушика</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- model-viewer для 3D Пушика -->
+  <!-- Google Model Viewer (обязательно) -->
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
   <style>
-    :root {
-      --bg-main: #f5f5f8;
-      --topbar-bg: #ffffff;
-      --pill-bg: #f3d8cf;
-      --accent-red: #ff4b5f;
-      --text-main: #111111;
-      --overlay-bg: rgba(0, 0, 0, 0.45);
-      --tooltip-bg: #ffffff;
-      --tooltip-text: #333333;
-      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.12);
-      --radius-big: 24px;
-      --transition-fast: 0.18s ease-out;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: var(--bg-main);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
+      margin:0;
+      background:#f5f5f8;
+      font-family: system-ui, sans-serif;
+      height:100vh;
+      overflow:hidden;
+    }
+    .container {
+      width:375px;
+      height:812px;
+      margin:0 auto;
+      position:relative;
+      background:#f5f5f8;
     }
 
-    .app-shell {
-      position: relative;
-      width: 100%;
-      max-width: 440px;
-      min-height: 100vh;
-      background: var(--bg-main);
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* TOP BAR */
-
+    /* Шапка */
     .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      height: 64px;
-      background: var(--topbar-bg);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      border-bottom: 1px solid #e3e3eb;
+      position:absolute;
+      top:0; left:0; right:0;
+      height:64px;
+      background:#ffffff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 16px;
+      border-bottom:1px solid #e3e3eb;
+      z-index:100;
     }
-
-    .top-bar-left,
-    .top-bar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn {
-      border: none;
-      background: none;
-      padding: 6px 10px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: background var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        opacity var(--transition-fast);
-    }
-
-    .btn:active {
-      transform: scale(0.97);
-    }
-
     .btn-back {
-      background: #f2f2f7;
-      padding-inline: 10px 14px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#f2f2f7;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .btn-hanger {
+      width:36px; height:36px;
+      background:#f2f2f7;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
     }
 
-    .btn-back:hover {
-      background: #e6e6f0;
+    /* Основной контент — шкаф */
+    .wardrobe {
+      position:absolute;
+      top:64px; left:0; right:0; bottom:0;
+      background:url('wardrobe_full.png') center / 375px 100% no-repeat;
+      background-size:375px 100%; /* ровно 375 px по ширине */
+      overflow:hidden;
     }
 
-    .btn-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: #f2f2f7;
-      justify-content: center;
-    }
-
-    .btn-icon:hover {
-      background: #e6e6f0;
-    }
-
-    .icon-back {
-      width: 16px;
-      height: 16px;
-      border-left: 2px solid #111;
-      border-bottom: 2px solid #111;
-      transform: rotate(45deg);
-    }
-
-    .icon-hanger {
-      position: relative;
-      width: 18px;
-      height: 18px;
-    }
-
-    .icon-hanger::before,
-    .icon-hanger::after {
-      content: "";
-      position: absolute;
-    }
-
-    .icon-hanger::before {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: 2px solid #111;
-      border-right-color: transparent;
-      border-bottom-color: transparent;
-      top: 0;
-      left: 3px;
-      transform: rotate(-35deg);
-    }
-
-    .icon-hanger::after {
-      bottom: 1px;
-      left: 2px;
-      right: 2px;
-      height: 2px;
-      background: #111;
-      border-radius: 999px;
-    }
-
-    .top-bar-title {
-      flex: 1;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 500;
-      opacity: 0.0;
-    }
-
-    /* MAIN CONTENT */
-
-    .content {
-      flex: 1;
-      padding: 16px 16px 80px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .wardrobe-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 375px;
-      aspect-ratio: 9 / 16;
-      margin: 0 auto;
-      border-radius: var(--radius-big);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px 12px 20px;
-      background: #f5f5f8;
-    }
-        /* Фон шкафа с шляпой */
- .wardrobe-overlay-image {
-  position: absolute;
-  inset: 0;
-  background-image: url('wardrobe_full.png');
-  background-size: contain;        /* ← было cover */
-  background-repeat: no-repeat;    /* ← добавь обязательно */
-  background-position: center top; /* ← чтобы не обрезало сверху/снизу */
-  opacity: 1;
-  pointer-events: none;
-}
-    /* Центральная ниша для Пушика */
-
-    #pushik-3d-container {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .pushik-frame {
-      width: 52%;
-      max-width: 210px;
-      aspect-ratio: 3 / 4;
-      position: relative;
-      pointer-events: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .pushik-3d-wrap {
-      width: 100%;
-      height: 100%;
-      border-radius: 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.22s cubic-bezier(0.22, 1.4, 0.36, 1),
-        box-shadow 0.22s ease-out;
-    }
-
-    .pushik-3d-wrap.bouncy {
-      transform: translateY(-4px) scale(1.04);
-      box-shadow: 0 18px 32px rgba(0, 0, 0, 0.35);
-    }
-
+    /* 3D-Пушик */
     model-viewer {
-      width: 100%;
-      height: 100%;
-      --poster-color: transparent;
-      background: transparent;
+      width:100%;
+      height:100%;
+      background:#ffffff; /* белый фон — убирает прозрачность */
+      --poster-color:transparent;
+    }
+    #pushik-container {
+      position:absolute;
+      top:0; left:0; right:0; bottom:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      pointer-events:auto;
+    }
+    .pushik-frame {
+      width:52%;
+      max-width:210px;
+      aspect-ratio:3/4;
     }
 
-    /* HOTSPOTS */
-
+    /* Кнопки (hotspots) */
     .hotspot {
-      position: absolute;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
-      cursor: pointer;
-      transition: transform var(--transition-fast),
-        box-shadow var(--transition-fast),
-        opacity var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position:absolute;
+      width:50px; height:50px;
+      background:#ffffff;
+      border-radius:50%;
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
+    .hotspot-1 { top:30%; left:18%; }
+    .hotspot-2 { top:45%; left:18%; }
+    .hotspot-3 { top:70%; left:18%; }
 
-    .hotspot::before {
-      content: "";
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #ffffff;
-    }
-
-    .hotspot:hover {
-      transform: scale(1.12);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-    }
-
-    .hotspot-1 {
-      left: 18%;
-      top: 30%;
-    }
-
-    .hotspot-2 {
-      left: 18%;
-      top: 45%;
-    }
-
-    .hotspot-3 {
-      left: 18%;
-      top: 70%;
-    }
-
-    .tooltip {
-      position: absolute;
-      max-width: 210px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: var(--tooltip-bg);
-      color: var(--tooltip-text);
-      font-size: 12px;
-      line-height: 1.4;
-      box-shadow: var(--shadow-soft);
-      opacity: 0;
-      pointer-events: none;
-      transform: translate(-50%, -10px) scale(0.96);
-      transition: opacity var(--transition-fast),
-        transform var(--transition-fast);
-      z-index: 6;
-    }
-
-    .tooltip.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translate(-50%, -14px) scale(1);
-    }
-
-    .tooltip::after {
-      content: "";
-      position: absolute;
-      bottom: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 6px;
-      border-style: solid;
-      border-color: var(--tooltip-bg) transparent transparent transparent;
-    }
-
-    /* Панель смены образа */
-
-    .outfit-panel {
-      position: absolute;
-      left: 50%;
-      bottom: 8%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      z-index: 10;
-    }
-
-    .outfit-label {
-      font-size: 11px;
-      color: rgba(0, 0, 0, 0.72);
-      padding: 3px 10px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(6px);
-    }
-
-    .btn-outfit {
-      border-radius: 999px;
-      border: none;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 500;
-      background: #ffffff;
-      color: #a12130;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-      transition: background var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
-    }
-        .btn-outfit:hover {
-      background: #ffe4de;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
-    }
-
-    .btn-outfit:active {
-      transform: translateY(0);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-    }
-
-    /* BOTTOM CURRENCY PILL */
-
+    /* Альфики внизу */
     .bottom-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 18px;
-      display: flex;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 15;
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#fdf0e9;
+      padding:12px 24px;
+      border-radius:999px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.15);
+      z-index:100;
     }
-
     .alpha-pill {
-      pointer-events: auto;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: var(--pill-bg);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-      font-size: 14px;
-      font-weight: 500;
+      font-weight:700;
+      font-size:20px;
+    }
+    .alpha-plus {
+      font-size:24px;
+      color:#ff6b9d;
+      cursor:pointer;
     }
 
-    .alpha-pill-amount {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .alpha-pill-amount span {
-      min-width: 22px;
-      text-align: right;
-    }
-
-    .alpha-pill-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 20%, #ffffff, #e8b7aa);
-      position: relative;
-    }
-
-    .alpha-pill-icon::after {
-      content: "А";
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: #a6212f;
-    }
-
-    .alpha-pill-plus {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background var(--transition-fast),
-        transform var(--transition-fast);
-    }
-
-    .alpha-pill-plus:hover {
-      background: rgba(0, 0, 0, 0.05);
-      transform: scale(1.05);
-    }
-
-    /* MODAL */
-
+    /* Модалка */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--overlay-bg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity var(--transition-fast);
-      z-index: 40;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
     }
-
-    .modal-overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
     .modal-card {
-      width: 86%;
-      max-width: 320px;
-      background: #ffffff;
-      border-radius: 22px;
-      padding: 20px 18px 16px;
-      box-shadow: var(--shadow-soft);
-      transform: translateY(10px) scale(0.97);
-      transition: transform var(--transition-fast);
+      width:86%;
+      max-width:320px;
+      background:#ffffff;
+      border-radius:24px;
+      padding:24px;
+      text-align:center;
+      box-shadow:0 20px 40px rgba(0,0,0,0.2);
     }
-
-    .modal-overlay.visible .modal-card {
-      transform: translateY(0) scale(1);
-    }
-
-    .modal-text {
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 14px;
-      text-align: center;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: center;
-    }
-
-    .btn-close-modal {
-      padding: 8px 24px;
-      background: var(--accent-red);
-      color: #ffffff;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(255, 75, 95, 0.4);
-      transition: background var(--transition-fast),
-        transform var(--transition-fast),
-        box-shadow var(--transition-fast);
-    }
-
-    .btn-close-modal:hover {
-      background: #ff354c;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(255, 75, 95, 0.5);
-    }
-
-    .btn-close-modal:active {
-      transform: translateY(0);
-      box-shadow: 0 5px 10px rgba(255, 75, 95, 0.35);
-    }
-
-    @media (min-width: 768px) {
-      body {
-        background: radial-gradient(circle at top, #ffffff, #e9e9f2);
-      }
-
-      .app-shell {
-        margin: 18px 0;
-        border-radius: 32px;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
-        overflow: hidden;
-      }
-            .bottom-bar {
-        bottom: 26px;
-      }
+    .btn-close {
+      margin-top:20px;
+      padding:12px 40px;
+      background:#ff5c8a;
+      color:#ffffff;
+      border:none;
+      border-radius:999px;
+      cursor:pointer;
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="top-bar">
-      <div class="top-bar-left">
-        <button class="btn btn-back" id="btn-back">
-          <span class="icon-back" aria-hidden="true"></span>
-          <span>Назад</span>
-        </button>
-      </div>
-      <div class="top-bar-title"></div>
-      <div class="top-bar-right">
-        <button class="btn btn-icon" id="btn-hanger" aria-label="Гардероб">
-          <span class="icon-hanger" aria-hidden="true"></span>
-        </button>
-      </div>
-    </header>
+  <div class="container">
+    <!-- Шапка -->
+    <div class="top-bar">
+      <button class="btn-back" onclick="window.location.href='game_screen.html'">← Назад</button>
+      <div class="btn-hanger" id="btn-hanger">👕</div>
+    </div>
 
-    <main class="content">
-      <div class="wardrobe-wrapper" id="wardrobe">
-        <!-- Фон шкафа -->
-        <div class="wardrobe-overlay-image"></div>
-
-        <!-- Контейнер для 3D-модели Пушика -->
-        <div id="pushik-3d-container">
-          <div class="pushik-frame">
-            <div class="pushik-3d-wrap" id="pushik-wrap">
-           <model-viewer
-  id="pushik-model"
-  src="pushik.glb"
-  alt="Пушик"
-  camera-controls
-  auto-rotate
-  ar
-  loading="lazy"
-  shadow-intensity="1"
-  exposure="1.0"
-  camera-orbit="0deg 75deg 105%"
-  field-of-view="30deg"
-  style="width:100%; height:100%; background-color="#ffffff";">
-</model-viewer>
-              
-            </div>
-          </div>
-        </div>
-
-        <!-- Точки одежды -->
-        <button
-          class="hotspot hotspot-1"
-          data-tooltip-id="tooltip-1"
-          aria-label="Одежда 1"
-        ></button>
-        <button
-          class="hotspot hotspot-2"
-          data-tooltip-id="tooltip-2"
-          aria-label="Одежда 2"
-        ></button>
-        <button
-          class="hotspot hotspot-3"
-          data-tooltip-id="tooltip-3"
-          aria-label="Одежда 3"
-        ></button>
-
-        <!-- Подсказки -->
-        <div id="tooltip-1" class="tooltip">
-          Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.
-        </div>
-        <div id="tooltip-2" class="tooltip">
-          Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.
-        </div>
-        <div id="tooltip-3" class="tooltip">
-          Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.
-        </div>
-
-        <!-- Панель смены образа -->
-        <div class="outfit-panel">
-          <div class="outfit-label" id="outfit-label">
-            Образ: базовый
-          </div>
-          <button class="btn-outfit" id="btn-outfit">
-            Сменить образ
-          </button>
+    <!-- Шкаф + 3D-Пушик -->
+    <div class="wardrobe">
+      <div id="pushik-container">
+        <div class="pushik-frame">
+          <model-viewer
+            src="pushik.glb"
+            alt="Пушик"
+            camera-controls
+            auto-rotate
+            ar
+            loading="lazy"
+            shadow-intensity="1"
+            exposure="1.0"
+            background-color="#ffffff"
+            camera-orbit="0deg 75deg 105%">
+          </model-viewer>
         </div>
       </div>
-    </main>
 
-    <!-- Нижняя плашка с Альфа-деньгами -->
+      <!-- Кнопки (hotspots) -->
+      <button class="hotspot hotspot-1" data-tooltip="Одежда 1"></button>
+      <button class="hotspot hotspot-2" data-tooltip="Одежда 2"></button>
+      <button class="hotspot hotspot-3" data-tooltip="Одежда 3"></button>
+    </div>
+
+    <!-- Альфики -->
     <div class="bottom-bar">
-      <div class="alpha-pill">
-        <div class="alpha-pill-amount">
-          <span id="alpha-amount">30</span>
-          <div class="alpha-pill-icon" aria-hidden="true"></div>
-        </div>
-        <div
-          class="alpha-pill-plus"
-          id="alpha-plus"
-          role="button"
-          aria-label="Добавить Альфа-денег"
-        >
-          +
-        </div>
+      <div class="alpha-pill">30</div>
+      <img src="Alfiki.png" width="28" height="28">
+      <div class="alpha-plus">+</div>
+    </div>
+
+    <!-- Модалка (пока в разработке) -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-card">
+        <p>Пора закупиться! Ждём, пока ты достигнешь уровня 5.</p>
+        <button class="btn-close" onclick="document.getElementById('modal-overlay').style.display='none'">Закрыть</button>
       </div>
     </div>
   </div>
 
-  <!-- Модалка вешалки -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal-card" role="dialog" aria-modal="true">
-      <div class="modal-text">
-        Пора закупиться! Ждём, пока ты достигнешь уровня 5 и сможешь покупать
-        вещи для Пушика.
-      </div>
-      <div class="modal-footer">
-        <button class="btn-close-modal" id="btn-close-modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-    <script>
+  <script>
+    // Кнопка вешалки → модалка
+    document.getElementById('btn-hanger').addEventListener('click', () => {
+      document.getElementById('modal-overlay').style.display = 'flex';
+    });
 
-  
-      
-    document.addEventListener("DOMContentLoaded", function () {
-      const backBtn = document.getElementById("btn-back");
-      const hangerBtn = document.getElementById("btn-hanger");
-      const modalOverlay = document.getElementById("modal-overlay");
-      const modalCloseBtn = document.getElementById("btn-close-modal");
-      const alphaPlus = document.getElementById("alpha-plus");
-      const wardrobe = document.getElementById("wardrobe");
-      const tooltips = document.querySelectorAll(".tooltip");
-      const hotspots = document.querySelectorAll(".hotspot");
-
-      const modelViewer = document.getElementById("pushik-model");
-      const pushikWrap = document.getElementById("pushik-wrap");
-      const outfitBtn = document.getElementById("btn-outfit");
-      const outfitLabel = document.getElementById("outfit-label");
-
-      /* Навигация и модалка */
-
-      function closeAllTooltips() {
-        tooltips.forEach((tt) => tt.classList.remove("visible"));
-      }
-
-      function openModal() {
-        modalOverlay.classList.add("visible");
-      }
-
-      function closeModal() {
-        modalOverlay.classList.remove("visible");
-      }
-
-      backBtn.addEventListener("click", function () {
-        if (window.history.length > 1) {
-          window.history.back();
-        } else {
-          window.location.href = "./";
-        }
+    // Кнопки одежды → модалка (можно потом заменить на разные)
+    document.querySelectorAll('.hotspot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('modal-overlay').style.display = 'flex';
       });
-
-      hangerBtn.addEventListener("click", function () {
-        closeAllTooltips();
-        openModal();
-      });
-
-      modalCloseBtn.addEventListener("click", function (event) {
-        event.stopPropagation();
-        closeModal();
-      });
-
-      modalOverlay.addEventListener("click", function (event) {
-        if (event.target === modalOverlay) {
-          closeModal();
-        }
-      });
-
-      alphaPlus.addEventListener("click", function () {
-        alert("Скоро: магазин Альфа-денег!");
-      });
-
-      /* Подсказки с уровнем */
-
-      hotspots.forEach((hotspot) => {
-        hotspot.addEventListener("click", function (event) {
-          event.stopPropagation();
-
-          const tooltipId = hotspot.getAttribute("data-tooltip-id");
-          const tooltip = document.getElementById(tooltipId);
-
-          const isVisible = tooltip.classList.contains("visible");
-          closeAllTooltips();
-
-          if (!isVisible) {
-            const rect = wardrobe.getBoundingClientRect();
-            const spotRect = hotspot.getBoundingClientRect();
-
-            const relativeX =
-              ((spotRect.left + spotRect.width / 2 - rect.left) /
-                rect.width) *
-              100;
-            const relativeY =
-              ((spotRect.top - rect.top) / rect.height) * 100;
-
-            tooltip.style.left = relativeX + "%";
-            tooltip.style.top = relativeY + "%";
-
-            tooltip.classList.add("visible");
-          }
-        });
-      });
-      document.addEventListener("click", function (event) {
-        const isHotspot = event.target.closest(".hotspot");
-        const isTooltip = event.target.closest(".tooltip");
-        const isModal = event.target.closest(".modal-card");
-        const isHanger = event.target.closest("#btn-hanger");
-
-        if (!isHotspot && !isTooltip && !isModal && !isHanger) {
-          closeAllTooltips();
-        }
-      });
-
-      /* Пружинка при взаимодействии */
-
-      if (modelViewer && pushikWrap) {
-        const triggerBounce = () => {
-          pushikWrap.classList.add("bouncy");
-          setTimeout(() => {
-            pushikWrap.classList.remove("bouncy");
-          }, 220);
-        };
-
-        modelViewer.addEventListener("pointerdown", triggerBounce);
-        modelViewer.addEventListener("wheel", triggerBounce);
-        modelViewer.addEventListener("touchstart", triggerBounce);
-      }
-
-      /* Смена образов (пока все три — один и тот же glb) */
-
-      const outfits = [
-        { name: "базовый",     src: "puhik.glb" },
-        { name: "повседневный",src: "puhik.glb" },
-        { name: "праздничный", src: "puhik.glb" },
-      ];
-
-      let currentOutfitIndex = 0;
-            function applyOutfit(index) {
-        const outfit = outfits[index];
-        if (!outfit || !modelViewer) return;
-
-        modelViewer.src = outfit.src;
-        outfitLabel.textContent = "Образ: " + outfit.name;
-        pushikWrap.classList.add("bouncy");
-        setTimeout(() => pushikWrap.classList.remove("bouncy"), 260);
-      }
-
-      outfitBtn.addEventListener("click", function () {
-        currentOutfitIndex = (currentOutfitIndex + 1) % outfits.length;
-        applyOutfit(currentOutfitIndex);
-      });
-
-      applyOutfit(currentOutfitIndex);
     });
   </script>
 </body>
