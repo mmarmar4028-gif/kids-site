@@ -113,6 +113,23 @@
       font-weight: 600;
       cursor: pointer;
     }
+    ```css
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 200;
+}
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
   </style>
 </head>
 <body>
@@ -137,7 +154,8 @@
  <!-- Кнопка "Проверить знания" — теперь ниже всего и правильного размера -->
 <div style="width:348px; margin:1px auto 1px; text-align:center;">
   <img src="checkknowledge.png" 
-       style="width:348px; height:50px; cursor:pointer; border-radius:32px; box-shadow:0 8px 20px rgba(0,0,0,0.15);"
+       onclick="document.getElementById('quiz-popup').classList.add('visible')"
+    style="width:348px; height:50px; cursor:pointer; border-radius:32px; box-shadow:0 8px 20px rgba(0,0,0,0.15);"
        alt="Проверить знания в квизе">
 </div>
 
@@ -152,5 +170,30 @@
     </div>
   </div>
 
+  <!-- Поп-ап при нажатии на кнопку "Проверить знания в квизе" -->
+<div class="overlay" id="quiz-popup">
+  <div style="text-align:center;">
+
+    <!-- Красный треугольник "Играть" -->
+    <div style="width:0; height:0; border-left:80px solid transparent; border-right:80px solid transparent; border-bottom:100px solid #ff3b30; margin:0 auto 20px; position:relative;">
+      <div style="position:absolute; top:30px; left:-35px; color:white; font-size:28px; font-weight:800; text-shadow:0 2px 4px rgba(0,0,0,0.3);">
+        Играть
+      </div>
+    </div>
+
+    <!-- Белая плашка с текстом -->
+    <div style="background:white; padding:20px 30px; border-radius:24px; box-shadow:0 15px 35px rgba(0,0,0,0.2); margin:0 20px;">
+      <p style="font-size:18px; font-weight:600; color:#333; margin-bottom:8px;">
+        Проверь свою финансовую грамотность!
+      </p>
+    </div>
+
+  </div>
+</div>
+  <script>
+  document.getElementById('quiz-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+</script>
 </body>
 </html>
