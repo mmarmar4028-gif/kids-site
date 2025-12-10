@@ -315,7 +315,6 @@ function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
-document.querySelectorAll('.nav-item').forEach(el => el.addEventListener('click', () => showScreen(el.dataset.screen)));
 
 // Клик по кнопкам
 document.getElementById('openPiggyPopup').addEventListener('click', () => document.getElementById('piggyOverlay').style.display = 'flex');
