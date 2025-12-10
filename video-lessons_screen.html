@@ -1,20 +1,15 @@
+
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Видео-уроки</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Видео-уроки</title>
+
+   
+<style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f5f7ff;
-      min-height: 100vh;
-      width: 375px;
-      margin: 0 auto;
-      position: relative;
-      overflow-x: hidden;
-    }
     .header {
       height: 64px;
       background: white;
@@ -41,7 +36,7 @@
       font-weight: 600;
       color: white;
     }
-    .title-bg {
+   .title-bg {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(135deg, #ff4b5f, #ff6b5f);
@@ -67,7 +62,7 @@
     .video-card:active {
       transform: scale(0.98);
     }
-    .video-card img {
+     .video-card img {
       width: 100%;
       max-width: 340px;
       border-radius: 20px;
@@ -83,14 +78,62 @@
     .bottom-nav-placeholder {
       height: 84px;
     }
-  </style>
+    html, body {
+        height: 100%;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f5f7ff;
+        width: 375px;
+        min-height: 812px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* Главный экран — теперь прокручивается */
+    #main-screen {
+        background: linear-gradient(to bottom, #f8f9ff 0%, #e8edff 100%);
+        min-height: 812px;
+        padding-bottom: 100px; /* место под фиксированную навигацию */
+        position: relative;
+    }
+
+    /* Контейнер с прокруткой */
+    .scroll-container {
+        padding: 0 16px;
+        padding-top: 20px;
+        min-height: calc(812px - 84px);
+    }
+
+    /* Шапка */
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    
+    }
+</style>
 </head>
 <body>
 
+<div id="video-lessons_screen" class="screen active">
+    <div class="scroll-container">
+
+        <div class="header">
+            <div class="avatar">А</div>
+            <div class="user-name" id="userName">Александра</div>
+        </div>
   <!-- Шапка с красной плашкой -->
   <div class="header">
     <div class="back-btn" onclick="window.location.href='game_screen.html'">Назад</div>
     <div class="title-bg"></div>
+    <img src="video-lessons.png">
     <div class="title">Видео-уроки</div>
   </div>
 
@@ -115,11 +158,47 @@
       <p>Вклады, депозиты, пассивный<br>доход</p>
     </div>
 
+    
+       
+       
+        <!-- Пустое место внизу — чтобы можно было проскроллить свинку вверх -->
+        <div style="height: 300px;"></div>
+
+    </div>
+
+    <!-- Свинка (фиксированная) -->
+    <img src="video3.png" class="video3" alt="копилка">
+
+
+
     <!-- Здесь можешь добавить ещё карточек — просто копируй блок выше -->
     
   </div>
 
   <div class="bottom-nav-placeholder"></div>
+   
+<script>
+// Переключение экранов
+function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
 
+// Клик по кнопкам
+document.getElementById('openvideo1').addEventListener('click', () => document.getElementById('video1.html').style.display = 'flex');
+document.getElementById('openvideo2').addEventListener('click', () => document.getElementById('video2.html').style.display = 'flex');
+document.getElementById('openvideo3').addEventListener('click', () => document.getElementById('video3.html').style.display = 'flex');
+
+function closeOverlay(id) { document.getElementById(id).style.display = 'none'; }
+document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click', e => { if (e.target === ov) ov.style.display = 'none'; }));
+});
+   
+</script>
 </body>
 </html>
+
+
+
+
+
+
