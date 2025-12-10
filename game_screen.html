@@ -61,18 +61,6 @@
    
 
     /* Нижняя навигация */
-    .nav {
-        position: fixed;
-        bottom: 0; left: auto; right: auto;
-        height: 84px;
-        background: white;
-        border-top: 1px solid #eee;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        width: 375px;
-        z-index: 100;
-    }
     .nav-item {
         text-align: center;
         cursor: pointer;
@@ -165,10 +153,10 @@
  
 <!-- Игровой экран -->
 <!-- Стало — добавляем фиксированную высоту и прокрутку -->
-<div id="game-screen" class="screen" style="background:#f8f9ff; height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative;">
+<div style="background:#f8f9ff; height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative;">
 
     <!-- Кнопка "Назад" - слева сверху -->
-    <div style="position:absolute; top:16px; left:16px; z-index:100; cursor:pointer; font-size:18px; font-weight:600; color:#333;" onclick="showScreen('main-screen')">
+    <div style="position:absolute; top:16px; left:16px; z-index:100; cursor:pointer; font-size:18px; font-weight:600; color:#333;" onclick="window.location.href='index.html'">
         ← Назад
     </div>
 
@@ -198,11 +186,11 @@
     </div>
 
     <!-- Задания родителей -->
-    <img src="tasks.png" width="340" height="46" onclick="showScreen('tasks-screen')" 
+    <img src="tasks.png" width="340" height="46" onclick="window.location.href='tasks_screen.html'" 
          style="position:absolute; top:410px; left:16px; border-radius:24px; cursor:pointer; z-index:20;">
 
 <!-- Пушик + речевое облачко — теперь весь блок кликабельный и ведёт в гардероб -->
-<div style="position:relative; text-align:center; margin:75px 0; cursor:pointer;" onclick="showScreen('wardrobe-screen')">
+<div style="position:relative; text-align:center; margin:75px 0; cursor:pointer;" onclick="window.location.href='wardrobe_screen.html'">
     <img src="PUSH.png" width="160" height="241">
     <div style="display:inline-block; background:white; top:170px; left:28%; padding:12px 24px; border-radius:30px; box-shadow:0 4px 15px rgba(0,0,0,0.1); font-size:18px; font-weight:600; margin-bottom:30px;">
         Давай поиграем
@@ -236,7 +224,7 @@
     </div>
 
     <!-- Видео-уроки -->
-    <img src="video-lessons.png" width="340" height="46" onclick="showScreen('video-screen')" 
+    <img src="video-lessons.png" width="340" height="46" onclick="window.location.href='video_screen.html'" 
          style="position:absolute; top:760px; left:16px; border-radius:24px; cursor:pointer; z-index:30;">
 
 
@@ -318,14 +306,6 @@
 <script>
 // LocalStorage
 let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
-document.getElementById('userName').textContent = userData.name;
-document.getElementById('balance').textContent = userData.balance.toLocaleString('ru-RU') + ' ₽';
-
-// Переключение экранов
-function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-}
 
 // Клик по кнопкам
 document.getElementById('openPiggyPopup').addEventListener('click', () => document.getElementById('piggyOverlay').style.display = 'flex');
