@@ -76,11 +76,7 @@
       transition: transform 0.2s;
     }
     .task-card:active { transform: scale(0.98); }
-    .task-card img {
-      width: 48px;
-      height: 48px;
-      margin-bottom: 12px;
-    }
+   
     .task-card p {
       font-size: 15px;
       font-weight: 600;
@@ -109,7 +105,7 @@
     .overlay.visible { opacity: 1; pointer-events: auto; }
     .popup {
       background: white;
-      padding: 32px 24px;
+      padding: 80px 24px;
       border-radius: 24px;
       text-align: center;
       max-width: 320px;
@@ -157,21 +153,34 @@
       <h2>Нужно выполнить</h2>
       <div class="tasks-scroll">
         <!-- Карточка 1 -->
-        <div class="task-card" onclick="document.getElementById('task-popup').classList.add('visible')">
+        <div class="task-card" onclick="document.getElementById('task-popup1').classList.add('visible')">
           <img src="icon1.png" alt="">
-          <p>Помыть полы</p>
+          <p>Помыть пол</p>
           <span>100 ₽</span>
           <span>Дата: 11.12.25</span>
         </div>
 
         <!-- Карточка 2 -->
-        <div class="task-card" onclick="document.getElementById('task-popup').classList.add('visible')">
+        <div class="task-card" onclick="document.getElementById('task-popup2').classList.add('visible')">
           <img src="icon2.png" alt="">
-          <p>Выгулять собаку</p>
+          <p>Выучить стих</p>
           <span>100 ₽</span>
           <span>Дата: 11.12.25</span>
         </div>
-
+ <!-- Карточка 3 -->
+        <div class="task-card" onclick="document.getElementById('task-popup3').classList.add('visible')">
+          <img src="icon2.png" alt="">
+          <p>Помыть свои кроссовки</p>
+          <span>100 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
+        <!-- Карточка 4 -->
+        <div class="task-card" onclick="document.getElementById('task-popup4').classList.add('visible')">
+          <img src="icon2.png" alt="">
+          <p>Приготовить ужин</p>
+          <span>250 ₽</span>
+          <span>Дата: 11.12.25</span>
+        </div>
         <!-- Добавляй новые карточки сюда — просто копируй блок -->
       </div>
     </div>
@@ -180,14 +189,20 @@
     <div class="category">
       <h2>Ждут проверки</h2>
       <div class="tasks-scroll">
-        <!-- Карточка -->
+        <!-- Карточка 1 -->
         <div class="task-card">
           <img src="icon3.png" alt="">
-          <p>Помыть посуду</p>
+          <p>Убрать за кошкой</p>
           <span>100 ₽</span>
-          <span>Дата: 11.12.25</span>
+          <span>посмотреть</span>
         </div>
-
+ <!-- Карточка 2 -->
+        <div class="task-card">
+          <img src="icon3.png" alt="">
+          <p>Выучить стих</p>
+          <span>100 ₽</span>
+          <span>посмотреть</span>
+        </div>
         <!-- Добавляй новые -->
       </div>
     </div>
@@ -199,26 +214,57 @@
         <!-- Карточка -->
         <div class="task-card">
           <img src="icon4.png" alt="">
-          <p>Убрать комнату</p>
+          <p>ДЗ по русскому</p>
           <span>100 ₽</span>
-          <span>Дата: 11.12.25</span>
+          <span>посмотреть</span>
         </div>
-
+  <!-- Карточка -->
+        <div class="task-card">
+          <img src="icon4.png" alt="">
+          <p>Выучить поэму</p>
+          <span>100 ₽</span>
+          <span>посмотреть</span>
+        </div>
         <!-- Добавляй новые -->
       </div>
     </div>
 
   </div>
 
-  <!-- Попап для задания "Нужно выполнить" -->
-  <div class="overlay" id="task-popup">
+  <!-- Попап для задания "Нужно помыть пол" -->
+  <div class="overlay" id="task-popup1">
     <div class="popup">
-      <p>Краткое описание задания:<br>Помыть полы в кухне и коридоре</p>
+      <p>Краткое описание задания:<br>Награда: 100₽ <br> Сделать до 11.12.2025 <br> Помыть пол до блеска</p>
       <button onclick="document.getElementById('dev-popup').classList.add('visible')">Добавить фотографию</button>
       <button onclick="document.getElementById('dev-popup').classList.add('visible')">Отправить на проверку</button>
     </div>
   </div>
 
+    <!-- Попап для задания "Нужно выучить стих" -->
+  <div class="overlay" id="task-popup2">
+    <div class="popup">
+      <p>Краткое описание задания:<br>Награда: 100₽ <br> Сделать до 11.12.2025 <br> Выучить стих Пушкина</p>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Отметить как выполненное</button>
+    </div>
+  </div>
+  
+    <!-- Попап для задания "Нужно помыть кроссовки" -->
+  <div class="overlay" id="task-popup3">
+    <div class="popup">
+      <p>Краткое описание задания:<br>Награда: 100₽ <br> Сделать до 11.12.2025 <br> Очистить угги от грязи</p>
+       <button onclick="document.getElementById('dev-popup').classList.add('visible')">Добавить фотографию</button>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Отправить на проверку</button>
+    </div>
+  </div>
+
+    <!-- Попап для задания "приготовить ужин" -->
+  <div class="overlay" id="task-popup4">
+    <div class="popup">
+      <p>Краткое описание задания:<br>Награда: 250₽ <br> Сделать до 11.12.2025 <br> Приготовить лазанью</p>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Отметить как выполненное</button>
+    </div>
+  </div>
+  
   <!-- Попап "Пока в разработке" -->
   <div class="overlay" id="dev-popup">
     <div class="popup">
