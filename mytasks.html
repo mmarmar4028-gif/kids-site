@@ -105,7 +105,7 @@
     .overlay.visible { opacity: 1; pointer-events: auto; }
     .popup {
       background: white;
-      padding: 80px 24px;
+      padding: 40px 24px;
       border-radius: 24px;
       text-align: center;
       max-width: 320px;
@@ -186,13 +186,13 @@
       <h2>Ждут проверки</h2>
       <div class="tasks-scroll">
         <!-- Карточка 1 -->
-        <div class="task-card">
+        <div class="task-card" onclick="document.getElementById('waitingtask-popup').classList.add('visible')">
           <p>Убрать за кошкой</p>
           <span>100 ₽</span>
           <span>посмотреть</span>
         </div>
  <!-- Карточка 2 -->
-        <div class="task-card">
+        <div class="task-card" onclick="document.getElementById('waitingtask-popup').classList.add('visible')">
           <p>Выучить стих</p>
           <span>100 ₽</span>
           <span>посмотреть</span>
@@ -206,13 +206,13 @@
       <h2>Выполненные задания</h2>
       <div class="tasks-scroll">
         <!-- Карточка -->
-        <div class="task-card">
+        <div class="task-card" onclick="document.getElementById('donetask-popup').classList.add('visible')">
           <p>ДЗ по русскому</p>
           <span>100 ₽</span>
           <span>посмотреть</span>
         </div>
   <!-- Карточка -->
-        <div class="task-card">
+        <div class="task-card" onclick="document.getElementById('donetask-popup').classList.add('visible')">
           <p>Выучить поэму</p>
           <span>100 ₽</span>
           <span>посмотреть</span>
@@ -265,6 +265,21 @@
     </div>
   </div>
 
+      <!-- Попап для задания "Ждут проверки" -->
+  <div class="overlay" id="waitingtask-popup">
+    <div class="popup">
+      <p>Задание выполнено<br>Скоро проверят!</p>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Понятно</button>
+    </div>
+  </div>
+
+    <!-- Попап для задания "Выполненные" -->
+  <div class="overlay" id="donetask-popup">
+    <div class="popup">
+      <p>Вы уже выполнили это задание</p>
+      <button onclick="document.getElementById('dev-popup').classList.add('visible')">Понятно</button>
+    </div>
+  </div>
 <script>
   // Закрытие попапов по клику за пределами
   document.querySelectorAll('.overlay').forEach(ov => {
