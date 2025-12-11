@@ -153,8 +153,8 @@
  
 <!-- Игровой экран -->
 <!-- Стало — добавляем фиксированную высоту и прокрутку -->
-<div style="background:#f8f9ff; height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative;">
-
+<div style="background:#f8f9ff; min-height:812px; overflow-y:auto; -webkit-overflow-scrolling:touch; position:relative; padding-bottom:150px;">
+   
     <!-- Кнопка "Назад" - слева сверху -->
     <div style="position:absolute; top:16px; left:16px; z-index:100; cursor:pointer; font-size:18px; font-weight:600; color:#333;" onclick="window.location.href='main_screen.html'">
         ← Назад
@@ -166,7 +166,7 @@
             <div style="width:44px; height:44px; background:#e86aff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:20px;">П</div>
             <span style="font-size:18px; font-weight:600;">Пушик Васек</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px; background:rgba(255,255,255,0.8); border-radius:20px;" id="openAlfikiPopup">
+        <div style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px; background:rgba(255,255,255,0.8); border-radius:20px;" id="openAlfikiPopup" onclick="document.getElementById('buy-alfiki-popup').style.display='flex'">
             <span style="font-weight:600; font-size:18px;">30</span>
             <img src="Alfiki.png" width="24" height="24">
             <span style="font-size:22px; color:#ff6b35;">+</span>
@@ -175,7 +175,7 @@
 
 
     <!-- Прогресс уровня -->
-    <div style="position:absolute; top:340px; left:16px; right:16px; cursor:pointer; padding:16px; background:rgba(255,255,255,0.9); border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,0.1); z-index:30;" id="openLevelPopup">
+    <div style="position:absolute; top:340px; left:16px; right:16px; cursor:pointer; padding:16px; background:rgba(255,255,255,0.9); border-radius:20px; box-shadow:0 6px 20px rgba(0,0,0,0.1); z-index:30;" id="openLevelPopup" onclick="document.getElementById('level-info-popup').style.display='flex'">
         <div style="display:flex; align-items:center; gap:12px;">
             <span style="font-weight:700; font-size:20px;">Ур.1</span>
             <div style="flex:1; height:14px; background:#e5e5e5; border-radius:7px; overflow:hidden;">
@@ -203,7 +203,7 @@
         <!-- Первый ряд -->
         <div style="overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; margin-bottom:1px;">
             <div style="display:inline-flex; gap:15px; padding:10px 0;">
-                <img src="fin quiz.png"      width="150" height="123" class="mini-game" data-name="Финансовый квиз"   data-desc="Отвечай на вопросы про деньги!" onclick="openMiniGame(this)">
+                <img src="fin quiz.png"      width="150" height="123" class="mini-game" data-name="Финансовый квиз"   data-desc="Отвечай на вопросы про деньги!" onclick="document.getElementById('quiz-popup').style.display='flex'">
                 <img src="tower.png"         width="150" height="123" class="mini-game" data-name="Построй башню"     data-desc="Строй самую высокую башню!" onclick="openMiniGame(this)">
                 <img src="block blust.png"   width="150" height="123" class="mini-game" data-name="Block Blust"       data-desc="Взрывай блоки!" onclick="openMiniGame(this)">
                 <img src="3-in-a-row.png"    width="150" height="123" class="mini-game" data-name="3 в ряд"           data-desc="Собирай конфетки!" onclick="openMiniGame(this)">
@@ -260,15 +260,12 @@
    
 <!-- Попапы -->
    <!-- Попап: Информация об уровне -->
-<div class="overlay" id="levelOverlay">
-    <div class="popup">
-        <h2>Уровень 1 → 2</h2>
-        <p>Собери ещё <b>65 XP</b>, чтобы перейти на следующий уровень!<br><br>
-           За прохождение получишь:<br>
-           • 50 альфиков<br>
-           • Новую одежду для Пушика</p>
-        <button class="close-popup" onclick="closeOverlay('levelOverlay')">Понятно</button>
-    </div>
+<div class="overlay" id="level-info-popup">
+  <div class="popup">
+    <h2>На 2 уровне ты получишь:</h2>
+    <p>• 5 альфиков<br>• Новые футболки для Пушика</p>
+    <button class="close-popup" onclick="closeOverlay('level-info-popup')">Понятно</button>
+  </div>
 </div>
 
 <!-- Попап: Мини-игра -->
@@ -281,13 +278,16 @@
     </div>
 </div>
 
-<!-- Попап: Пополнить альфики (заглушка) -->
-<div class="overlay" id="alfikiOverlay">
-    <div class="popup">
-        <h2>Пополнить альфики</h2>
-        <p>Скоро здесь можно будет купить альфики за реальные деньги или получить от родителей</p>
-        <button class="close-popup" onclick="closeOverlay('alfikiOverlay')">Понятно</button>
-    </div>
+<!-- Поп-ап покупки альфиков -->
+<div class="overlay" id="buy-alfiki-popup">
+  <div class="popup">
+    <h2>Купить альфики</h2>
+    <button class="close-popup" style="background:#ff4b5f;" onclick="buyAlfiki(15,60)">15 альфиков — 60 ₽</button>
+    <button class="close-popup" style="background:#ff4b5f;" onclick="buyAlfiki(30,99)">30 альфиков — 99 ₽</button>
+    <button class="close-popup" style="background:#ff4b5f;" onclick="buyAlfiki(45,149)">45 альфиков — 149 ₽</button>
+    <button class="close-popup" style="background:#ff4b5f;" onclick="buyAlfiki(75,199)">75 альфиков — 199 ₽</button>
+    <button class="close-popup" onclick="closeOverlay('buy-alfiki-popup')">Закрыть</button>
+  </div>
 </div>
    
 <!-- Попап-заглушка "Пока в разработке" -->
@@ -299,7 +299,20 @@
     </div>
 </div>
 
-
+<!-- Поп-ап для мини-игр -->
+<div class="overlay" id="quiz-popup">
+  <div style="background:white; width:320px; border-radius:28px; padding:32px 24px 28px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.25);">
+    <p style="font-size:19px; font-weight:700; color:#333; line-height:1.4; margin-bottom:28px;">
+      Проверь свою финансовую<br>грамотность!
+    </p>
+    <div style="position:relative; display:inline-block; cursor:pointer;" onclick="alert('Игра в разработке!')">
+      <div style="width:0; height:0; border-top:50px solid transparent; border-bottom:50px solid transparent; border-left:115px solid #ff3b30; margin:0 auto;"></div>
+      <div style="position:absolute; top:50%; left:7px; transform:translateY(-50%); color:white; font-size:24px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,0.4);">
+        Играть
+      </div>
+    </div>
+  </div>
+</div>
 
 
    
@@ -307,6 +320,20 @@
 // LocalStorage
 let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
 
+   function buyAlfiki(count, price) {
+  let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
+  if (data.balance >= price) {
+    data.balance -= price;
+    data.alfiki += count;
+    localStorage.setItem('plushikUser', JSON.stringify(data));
+    alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
+    document.querySelector('#openAlfikiPopup span').textContent = data.alfiki;
+  } else {
+    alert('Недостаточно денег!');
+  }
+  closeOverlay('buy-alfiki-popup');
+}
+   
 // Клик по кнопкам
 document.getElementById('openPiggyPopup').addEventListener('click', () => document.getElementById('piggyOverlay').style.display = 'flex');
 document.getElementById('openInstruction').addEventListener('click', () => document.getElementById('instructionOverlay').style.display = 'flex');
