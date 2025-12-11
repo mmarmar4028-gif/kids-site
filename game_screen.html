@@ -224,7 +224,7 @@
     </div>
 
     <!-- Видео-уроки -->
-    <img src="video-lessons.png" width="340" height="46" onclick="window.location.href='video_screen.html'" 
+    <img src="video-lessons.png" width="340" height="46" onclick="window.location.href='video-lessons_screen.html'" 
          style="position:absolute; top:760px; left:16px; border-radius:24px; cursor:pointer; z-index:30;">
 
 
@@ -318,14 +318,18 @@
    
 <script>
 // LocalStorage
-let userData = JSON.parse(localStorage.getItem('plushikUser')) || { name: "Александра", balance: 6000 };
-
+let userData = JSON.parse(localStorage.getItem('plushikUser')) || { 
+  name: "Александра", 
+  balance: 6000, 
+  alfiki: 30   // ← это можно оставить ТОЛЬКО если у тебя вообще нет сохранённых данных
+};
    function buyAlfiki(count, price) {
   let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
   if (data.balance >= price) {
     data.balance -= price;
     data.alfiki += count;
     localStorage.setItem('plushikUser', JSON.stringify(data));
+     document.querySelector('#openAlfikiPopup span').textContent = data.alfiki;
     alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
     document.querySelector('#openAlfikiPopup span').textContent = data.alfiki;
   } else {
@@ -345,7 +349,14 @@ document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click',
 document.getElementById('openLevelPopup')?.addEventListener('click', () => {
     document.getElementById('levelOverlay').style.display = 'flex';
 });
-   
+// Закрытие всех поп-апов по клику за пределами
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.style.display = 'none';
+    }
+  });
+});   
 </script>
 </body>
 </html>
