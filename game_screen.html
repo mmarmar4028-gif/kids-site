@@ -477,7 +477,31 @@ document.querySelectorAll('.overlay').forEach(overlay => {
       this.style.display = 'none';
     }
   });
-});   
+}); 
+   document.getElementById('quiz-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('tetris-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('tower-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('bird-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('chess-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('blust-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('3inarow-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
+   document.getElementById('tic-toe-popup')?.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('visible');
+  });
 </script>
 </body>
 </html>
