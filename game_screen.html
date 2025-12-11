@@ -439,11 +439,15 @@
    
 <script>
 // LocalStorage
-let userData = JSON.parse(localStorage.getItem('plushikUser')) || { 
-  name: "Александра", 
-  balance: 6000, 
-  alfiki: 30   // ← это можно оставить ТОЛЬКО если у тебя вообще нет сохранённых данных
-};
+let userData = JSON.parse(localStorage.getItem('plushikUser'));
+if (!userData) {
+  userData = { name: "Александра", balance: 6000, alfiki: 30 };
+  localStorage.setItem('plushikUser', JSON.stringify(userData));
+}
+   // Обновляем число альфиков на экране при загрузке
+const alfikiDisplay = document.querySelector('#openAlfikiPopup span:first-child');
+if (alfikiDisplay) alfikiDisplay.textContent = userData.alfiki;
+   
    function buyAlfiki(count, price) {
   let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
   if (data.balance >= price) {
@@ -452,8 +456,7 @@ let userData = JSON.parse(localStorage.getItem('plushikUser')) || {
     localStorage.setItem('plushikUser', JSON.stringify(data));
      document.querySelector('#openAlfikiPopup span').textContent = data.alfiki;
     alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
-    document.querySelector('#openAlfikiPopup span').textContent = data.alfiki;
-  } else {
+     } else {
     alert('Недостаточно денег!');
   }
   closeOverlay('buy-alfiki-popup');
