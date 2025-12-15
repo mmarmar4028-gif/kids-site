@@ -7,16 +7,6 @@
   <meta name="viewport"
         content="width=375, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 
-  <!-- three.js через import map -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-
   <style>
     * {
       box-sizing: border-box;
@@ -279,36 +269,6 @@
       transform: translateY(1px);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) inset;
     }
-
-     /* Попапы */
-    .overlay {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.65);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 200;
-    }
-    .popup {
-        background: white;
-        border-radius: 24px;
-        padding: 32px 24px;
-        text-align: center;
-        max-width: 320px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-    .popup h2 { margin-bottom: 16px; font-size: 22px; }
-    .close-popup {
-        margin-top: 24px;
-        padding: 12px 40px;
-        background: #ff5c8a;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        font-size: 16px;
-        cursor: pointer;
-    }
     
   </style>
 </head>
@@ -339,17 +299,15 @@
     <!-- Контейнер монстра -->
     <div class="monster-container" id="monsterContainer"></div>
 
-
- <!-- Кнопка альфиков — новая позиция и размер -->
-<div style="position:absolute; left:125px; right:121px; bottom:69px; top:695px; display:flex; align-items:center; justify-content:center; gap:12px; cursor:pointer; padding:14px; background:rgba(255,255,255,0.9); border-radius:24px; box-shadow:0 8px 20px rgba(0,0,0,0.15); z-index:50;" 
-     id="openAlfikiPopupNew" onclick="document.getElementById('buy-alfiki-popup').style.display='flex'">
-  
-  <span style="font-weight:700; font-size:22px; color:#333;" id="alfikiCount">30</span>
-  <img src="Alfiki.png" width="32" height="32">
-  <span style="font-size:28px; color:#ff6b35; font-weight:bold;">+</span>
-</div>
-
-
+ <!-- Нижняя плашка -->
+    <div class="bottom-panel">
+      <button class="coin-button" id="coinButton">
+        <span class="coin-text">30</span>
+        <span class="coin-icon">◎</span>
+      </button>
+      <button class="round-button" id="plusButton">+</button>
+    </div>
+    
           
     <!-- Модалка -->
     <div class="modal" id="lockedModal">
@@ -368,9 +326,9 @@
     /***********************
      * Импорты three.js
      ***********************/
-    import * as THREE from "three";
-    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-    import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import * as THREE from 'https://unpkg.com/three@0.168.0/build/three.module.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.168.0/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.168.0/examples/jsm/loaders/GLTFLoader.js';
 
     /***********************
      * DOM-элементы
@@ -539,5 +497,46 @@ camera.updateProjectionMatrix();
     animate();
 
   </script>
+
+  <script>
+    // LocalStorage — общее для всех экранов
+let userData = JSON.parse(localStorage.getItem('plushikUser'));
+if (!userData) {
+  userData = { name: "Александра", balance: 6000, alfiki: 30 };
+  localStorage.setItem('plushikUser', JSON.stringify(userData));
+}
+
+// Обновляем число альфиков на этом экране при загрузке
+const alfikiDisplayNew = document.getElementById('alfikiCount');
+if (alfikiDisplayNew) alfikiDisplayNew.textContent = userData.alfiki;
+
+// Функция покупки (та же, что и на других экранах)
+function buyAlfiki(count, price) {
+  let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
+  if (data.balance >= price) {
+    data.balance -= price;
+    data.alfiki += count;
+    localStorage.setItem('plushikUser', JSON.stringify(data));
+    
+    // Обновляем на ЭТОМ экране
+    if (alfikiDisplayNew) alfikiDisplayNew.textContent = data.alfiki;
+    
+    alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
+  } else {
+    alert('Недостаточно денег!');
+  }
+  closeOverlay('buy-alfiki-popup');
+}
+
+  // Закрытие любого поп-апа по клику на тёмный фон
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.style.display = 'none';
+    }
+  });
+});
+</script>
+  
 </body>
 </html>
