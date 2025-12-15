@@ -397,7 +397,7 @@
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-    camera.position.set(0, 0.4, 2.1);
+    camera.position.set(0, 0.4, 1.6);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -447,21 +447,32 @@
         monster = gltf.scene;
 
         // Нормализуем модель: центр в (0,0,0), масштаб по высоте
-        const box = new THREE.Box3().setFromObject(monster);
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
+       // 1) bounds модели
+const box = new THREE.Box3().setFromObject(monster);
+const size = box.getSize(new THREE.Vector3());
+const center = box.getCenter(new THREE.Vector3());
 
-        monster.position.sub(center);
+// 2) центрируем модель
+monster.position.sub(center);
 
-        const targetHeight = 1.2; // "рост" монстра в мировых координатах
-        const scale = targetHeight / size.y;
-        monster.scale.setScalar(scale);
+// 3) FIT-камера с учетом aspect (чтобы не резало ни по ширине, ни по высоте)
+const fitOffset = 1.8; // увеличь до 2.0 если всё ещё режет
+const aspect = camera.aspect;
 
-        // Опустить так, чтобы стоял "на полке"
-        monster.position.y = -targetHeight / 2 + 1.3;
+const vFOV = THREE.MathUtils.degToRad(camera.fov);             // вертикальный
+const hFOV = 2 * Math.atan(Math.tan(vFOV / 2) * aspect);       // горизонтальный
 
+const distV = (size.y / 2) / Math.tan(vFOV / 2);
+const distH = (size.x / 2) / Math.tan(hFOV / 2);
+const distance = Math.max(distV, distH) * fitOffset;
+
+camera.position.set(0, 0.2, distance);
+camera.lookAt(0, 0, 0);
+camera.near = distance / 100;
+camera.far  = distance * 100;
+camera.updateProjectionMatrix();
+
+        
         monster.traverse((child) => {
           if (child.isMesh) {
             child.castShadow = false;
