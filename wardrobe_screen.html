@@ -310,12 +310,15 @@
 
     <!-- Нижняя плашка -->
     <div class="bottom-panel">
-      <button class="coin-button" id="coinButton">
-        <span class="coin-text">30</span>
-        <span class="coin-icon">◎</span>
+      <button class="coin-button" id="coinButton" onclick="document.getElementById('buy-alfiki-popup').style.display='flex'">
+        <style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:10px; background:rgba(255,255,255,0.8); border-radius:20px;">
+           <span style="font-weight:600; font-size:26px;">30</span>
+            <img src="Alfiki.png" width="40" height="40">
+            <span style="font-size:28px; color:#ff6b35;">+</span>
       </button>
       <button class="round-button" id="plusButton">+</button>
-    </div>
+    </div>    
+     
 
     <!-- Модалка -->
     <div class="modal" id="lockedModal">
