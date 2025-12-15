@@ -538,44 +538,6 @@ camera.updateProjectionMatrix();
 
     animate();
 
-    
-  // LocalStorage — общее для всех экранов
-let userData = JSON.parse(localStorage.getItem('plushikUser'));
-if (!userData) {
-  userData = { name: "Александра", balance: 6000, alfiki: 30 };
-  localStorage.setItem('plushikUser', JSON.stringify(userData));
-}
-
-// Обновляем число альфиков на этом экране при загрузке
-const alfikiDisplayNew = document.getElementById('alfikiCount');
-if (alfikiDisplayNew) alfikiDisplayNew.textContent = userData.alfiki;
-
-// Функция покупки (та же, что и на других экранах)
-function buyAlfiki(count, price) {
-  let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
-  if (data.balance >= price) {
-    data.balance -= price;
-    data.alfiki += count;
-    localStorage.setItem('plushikUser', JSON.stringify(data));
-    
-    // Обновляем на ЭТОМ экране
-    if (alfikiDisplayNew) alfikiDisplayNew.textContent = data.alfiki;
-    
-    alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
-  } else {
-    alert('Недостаточно денег!');
-  }
-  closeOverlay('buy-alfiki-popup');
-}
-
-  // Закрытие любого поп-апа по клику на тёмный фон
-document.querySelectorAll('.overlay').forEach(overlay => {
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) {
-      overlay.style.display = 'none';
-    }
-  });
-});
   </script>
  
   <!-- Поп-ап покупки альфиков (тот же, что и на других экранах) -->
