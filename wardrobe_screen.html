@@ -567,6 +567,15 @@ function buyAlfiki(count, price) {
   }
   closeOverlay('buy-alfiki-popup');
 }
+
+  // Закрытие любого поп-апа по клику на тёмный фон
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.style.display = 'none';
+    }
+  });
+});
   </script>
  
   <!-- Поп-ап покупки альфиков (тот же, что и на других экранах) -->
