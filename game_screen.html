@@ -277,19 +277,22 @@
 </div>
 
 
-<!-- Поп-ап "Проверить знания в квизе" — точь-в-точь как на твоей фотке -->
+<!-- Поп-ап "Проверить знания в квизе" — кнопка ниже, без смещения треугольника -->
 <div class="overlay" id="quiz-popup">
-  <div style="background:white; width:320px; border-radius:28px; padding:32px 24px 28px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.25); position:relative;">
+  <div style="background:white; width:320px; border-radius:28px; padding:32px 24px 40px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.25); position:relative;">
     <!-- Белая плашка с текстом -->
-    <p style="font-size:19px; font-weight:700; color:#333; line-height:1.4; margin-bottom:28px;"> Проверь свою финансовую<br>грамотность!
+    <p style="font-size:19px; font-weight:700; color:#333; line-height:1.4; margin-bottom:28px;">
+      Проверь свою финансовую<br>грамотность!
     </p>
-    <div style="position:relative; display:inline-block; cursor:pointer;" 
+    <!-- Треугольник "Играть" — остаётся на месте -->
+    <div style="position:relative; display:inline-block; cursor:pointer;"
          onclick="document.getElementById('dev-popup').style.display='flex'">
-      <div style="width:0; height:0; border-top: 50px solid transparent; border-bottom: 50px solid transparent; border-left: 115px solid #ff3b30;  margin:0 auto;">  </div>
-      <!-- Надпись "Играть" внутри треугольника -->
-      <div style="position:absolute; top:50%; left:7px; transform:translateY(-50%); color:white; font-size:24px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,0.4); pointer-events:none;"> Играть </div>
+      <div style="width:0; height:0; border-top: 50px solid transparent; border-bottom: 50px solid transparent; border-left: 115px solid #ff3b30; margin:0 auto;"></div>
+      <div style="position:absolute; top:50%; left:7px; transform:translateY(-50%); color:white; font-size:24px; font-weight:800; text-shadow:0 2px 6px rgba(0,0,0,0.4); pointer-events:none;">
+        Играть</div>
     </div>
-    <button class="close-popup" onclick="closeOverlay('buy-alfiki-popup')">Закрыть</button> 
+    <!-- Кнопка "Закрыть" — ниже всего, с отступом сверху (не смещает треугольник) -->
+    <button class="close-popup" style="margin-top:32px;" onclick="closeOverlay('quiz-popup')"> Закрыть </button>
   </div>
 </div>
 
