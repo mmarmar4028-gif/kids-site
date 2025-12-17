@@ -469,15 +469,14 @@ document.querySelectorAll('.overlay').forEach(ov => ov.addEventListener('click',
 document.getElementById('openLevelPopup')?.addEventListener('click', () => {
     document.getElementById('levelOverlay').style.display = 'flex';
 });
-// Закрытие всех поп-апов по клику за пределами
-document.querySelectorAll('.overlay').forEach(overlay => {
+// Закрытие любого поп-апа кликом по тёмному фону
+document.querySelectorAll('.overlay').forEach(function(overlay) {
   overlay.addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.style.display = 'none';
+    if (e.target === overlay) {
+      overlay.style.display = 'none';
     }
   });
-}); 
-
+});
 
    
 
