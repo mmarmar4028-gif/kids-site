@@ -330,6 +330,14 @@ function buyAlfiki(count, price) {
       });
       document.addEventListener("click", () => document.querySelectorAll(".tooltip").forEach(t => t.classList.remove("visible")));
     });
+    // Закрытие любого поп-апа кликом по тёмному фону
+document.querySelectorAll('.overlay').forEach(function(overlay) {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.style.display = 'none';
+    }
+  });
+});
   </script>
 </body>
 </html>
