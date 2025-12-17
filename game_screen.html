@@ -470,14 +470,13 @@ document.getElementById('openLevelPopup')?.addEventListener('click', () => {
     document.getElementById('levelOverlay').style.display = 'flex';
 });
 // Закрытие любого поп-апа кликом по тёмному фону
-document.querySelectorAll('.overlay').forEach(function(overlay) {
+document.querySelectorAll('.overlay').forEach(overlay => {
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) {
       overlay.style.display = 'none';
     }
   });
 });
-
    
 
 </script>
