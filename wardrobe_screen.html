@@ -1,541 +1,238 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Монстрик в шкафу</title>
-  <meta name="viewport"
-        content="width=375, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
-
+  <title>Гардероб Пушика</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+    :root {
+      --bg-main: #f5f5f8;
+      --topbar-bg: #ffffff;
+      --pill-bg: #f3d8cf;
+      --accent-red: #ff4b5f;
+      --text-main: #111111;
+      --overlay-bg: rgba(0, 0, 0, 0.45);
+      --tooltip-bg: #ffffff;
+      --tooltip-text: #333333;
+      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --radius-big: 24px;
+      --transition-fast: 0.18s ease-out;
     }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
     body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
-      background: #f5f5f7;
-      color: #111;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      align-items: stretch;
     }
-
-    /* "Телефон" 375×812 */
-    .phone {
+    .app-shell {
       position: relative;
-      width: 375px;
-      height: 812px;
-      background: #f5f5f7;
-      overflow: hidden;
-    }
-
-    /* Верхняя панель */
-    .top-bar {
-      position: absolute;
-      left: 0;
-      top: 0;
       width: 100%;
-      height: 144px; /* серый верх, как на макете */
+      max-width: 375px;
+      min-height: 100vh;
+      background: var(--bg-main);
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 16px 20px 0;
+      flex-direction: column;
     }
-
-    .back-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #111;
-      font-size: 16px;
-      cursor: pointer;
-      background: none;
-      border: none;
+    /* TOP BAR */
+    .top-bar {
+      position: sticky; top: 0; z-index: 20; height: 64px; background: var(--topbar-bg);
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      border-bottom: 1px solid #e3e3eb;
     }
+    .btn { border: none; background: none; padding: 6px 10px; border-radius: 999px; cursor: pointer; }
+    .btn-back { background: #f2f2f7; padding: 10px 14px; }
+    .icon-back { width: 16px; height: 16px; border-left: 2px solid #111; border-bottom: 2px solid #111; transform: rotate(45deg); }
+    .icon-hanger { position: relative; width: 18px; height: 18px; }
+    .icon-hanger::before { content: ""; position: absolute; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #111; border-right-color: transparent; border-bottom-color: transparent; top: 0; left: 3px; transform: rotate(-35deg); }
+    .icon-hanger::after { content: ""; position: absolute; bottom: 1px; left: 2px; right: 2px; height: 2px; background: #111; border-radius: 999px; }
 
-    .back-arrow {
-      font-size: 18px;
-      transform: translateY(-1px);
-    }
-
-    .icon-button {
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      border: 1.5px solid #111;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-    }
-
-    .hanger-icon {
-      width: 16px;
-      height: 10px;
-      border-bottom: 1.5px solid #111;
-      border-radius: 0 0 50% 50%;
-      position: relative;
-    }
-
-    .hanger-icon::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -4px;
-      width: 6px;
-      height: 6px;
-      border: 1.5px solid #111;
-      border-radius: 50%;
-      transform: translateX(-50%);
-      border-bottom-color: transparent;
-      border-left-color: transparent;
-    }
-
-    /* Шкаф: 375×518, строго по центру */
+    /* ГЛАВНЫЙ КОНТЕНТ */
+    .content { flex: 1; padding: 16px 16px 80px; display: flex; justify-content: center; align-items: flex-start; }
     .wardrobe-wrapper {
-      position: absolute;
-      left: 0;
-      top: 144px;
+      position: relative;
       width: 375px;
       height: 518px;
+      margin: 0 auto;
+      border-radius: var(--radius-big);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      background: #f5f5f8;
     }
-
-    .wardrobe-image {
-      width: 100%;
-      height: 100%;
-      display: block;
-      border-radius: 0;
-      object-fit: cover;
-    }
-
-    /* Три белые кнопки слева (привязаны к шкафу) */
-    .side-button {
+    .wardrobe-bg {
       position: absolute;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
-      border: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
-      z-index: 15;
-    }
-
-    /* координаты относительно ЛЕВОГО ВЕРХНЕГО УГЛА ШКАФА (top:144) */
-    .side-button-1 { left: 36px; top: 35px; }  /* на уровне верхней одежды */
-    .side-button-2 { left: 36px; top: 210px; }
-    .side-button-3 { left: 36px; top: 380px; }  /* низ, как в макете */
-
-    .side-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-    }
-
-    .side-button:active {
-      transform: scale(0.95);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Контейнер под 3D-монстра
-       ВНИМАНИЕ: размеры и позиция по ТВОИМ цифрам
-       ширина 187, высота 280
-       отступ слева 96, сверху 304 от всего экрана 375×812
-    */
-    .monster-container {
-      position: absolute;
-      left: 100px;
-      top: 310px;
-      bottom: 100px;
-      width: 310px;
-      height: 450px;
+      inset: 0;
+      background: url('wardrobe_full.png') center/contain no-repeat;
       pointer-events: none;
-      z-index: 20;
-      overflow: visible;
     }
-
-    .monster-container canvas {
-      width: 60%;
-      height: 70%;
-      display: block;
-    }
-
-    /* Нижняя панель с монеткой */
-    .bottom-panel {
+    #pushik-container {
       position: absolute;
-      left: 0;
-      bottom: 24px;
-      width: 100%;
+      top: 0; left: 0; right: 0; bottom: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 16px;
+      pointer-events: none;
+    }
+    #pushik-img {
+      width: 52%;
+      max-width: 210px;
+      border-radius: 24px;
+      transition: transform 0.22s cubic-bezier(0.22, 1.4, 0.36, 1), box-shadow 0.22s ease-out;
+    }
+    #pushik-img.bouncy {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.35);
     }
 
-    .coin-button {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 22px;
-      border-radius: 999px;
-      background: #f7d9b8;
-      font-size: 16px;
-      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
+    /* Точки одежды */
+    .hotspot {
+      position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.22); cursor: pointer; z-index: 5;
+    }
+    .hotspot-1 { left: 18%; top: 30%; }
+    .hotspot-2 { left: 18%; top: 45%; }
+    .hotspot-3 { left: 18%; top: 70%; }
+
+    .tooltip {
+      position: absolute; max-width: 210px; padding: 10px 12px; border-radius: 14px;
+      background: white; font-size: 12px; box-shadow: var(--shadow-soft);
+      opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s;
+      transform: translate(-50%, -10px) scale(0.96); z-index: 6;
+    }
+    .tooltip.visible { opacity: 1; transform: translate(-50%, -14px) scale(1); pointer-events: auto; }
+    .tooltip::after { content: ""; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+      border: 6px solid transparent; border-top-color: white; }
+
+    /* Панель образа */
+    .outfit-panel {
+      position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); text-align: center; z-index: 10;
+    }
+    .outfit-label {
+      font-size: 11px; color: rgba(0,0,0,0.72); background: rgba(255,255,255,0.7); padding: 3px 10px; border-radius: 999px; backdrop-filter: blur(6px);
+    }
+    .btn-outfit {
+      margin-top: 6px; padding: 6px 14px; background: white; color: #a12130; border: none; border-radius: 999px;
+      font-size: 12px; font-weight: 500; cursor: pointer; box-shadow: 0 6px 14px rgba(0,0,0,0.18);
     }
 
-    .coin-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      border: 1.5px solid #111;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
+    /* Нижняя плашка */
+    .bottom-bar { position: fixed; left: 0; right: 0; bottom: 18px; display: flex; justify-content: center; z-index: 15; }
+    .alpha-pill {
+      display: flex; align-items: center; gap: 10px; padding: 6px 14px; background: var(--pill-bg);
+      border-radius: 999px; box-shadow: 0 6px 14px rgba(0,0,0,0.18); font-size: 14px; font-weight: 500;
     }
+    .alpha-pill-plus { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-    .round-button {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: #f7d9b8;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 4px 9px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
+    /* Модалка */
+    .modal-overlay {
+      position: fixed; inset: 0; background: var(--overlay-bg); display: flex; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none; transition: opacity .18s; z-index: 40;
     }
-
-    /* Модалка “откроется на 5 уровне” */
-    .modal {
-      position: absolute;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-
-    .modal.visible {
-      display: flex;
-    }
-
-    .modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-window {
-      position: relative;
-      max-width: 300px;
-      width: 80%;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 20px 20px 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      text-align: center;
-      z-index: 1;
-    }
-
-    .modal-text {
-      margin: 0 0 16px;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .modal-close-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 18px;
-      border-radius: 999px;
-      background: #ff4b4b;
-      color: #fff;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .modal-close-button:active {
-      transform: translateY(1px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) inset;
-    }
-    
+    .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+    .modal-card { width: 86%; max-width: 320px; background: white; border-radius: 22px; padding: 20px 18px 16px; text-align: center; }
+    .btn-close-modal { padding: 8px 24px; background: var(--accent-red); color: white; border: none; border-radius: 999px; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="phone">
-    <!-- Верх -->
+  <div class="app-shell">
     <header class="top-bar">
-      <button class="back-button" id="backButton">
-        <span class="back-arrow">←</span>
-        <span>Назад</span>
-      </button>
-
-      <button class="icon-button" id="hangerButton" aria-label="Гардероб">
-        <span class="hanger-icon"></span>
-      </button>
+      <div class="top-bar-left">
+        <button class="btn btn-back" id="btn-back">Назад</button>
+      </div>
+      <div class="top-bar-right">
+        <button class="btn" id="btn-hanger">Вешалка</button>
+      </div>
     </header>
 
-    <!-- Шкаф -->
-    <div class="wardrobe-wrapper">
-      <img src="wardrobe_full.png" alt="Шкаф" class="wardrobe-image" />
+    <main class="content">
+      <div class="wardrobe-wrapper" id="wardrobe">
+        <!-- Фон шкафа -->
+        <div class="wardrobe-bg"></div>
 
-      <!-- три круглых кнопки слева -->
-      <button class="side-button side-button-1" id="sideButton1"></button>
-      <button class="side-button side-button-2" id="sideButton2"></button>
-      <button class="side-button side-button-3" id="sideButton3"></button>
-    </div>
+        <!-- Пушик (плоская PNG) -->
+        <div id="pushik-container">
+          <img id="pushik-img" src="pushik_base.png" alt="Пушик">
+        </div>
 
-    <!-- Контейнер монстра -->
-    <div class="monster-container" id="monsterContainer"></div>
+        <!-- Кликабельные точки -->
+        <button class="hotspot hotspot-1" data-tooltip-id="tooltip-1"></button>
+        <button class="hotspot hotspot-2" data-tooltip-id="tooltip-2"></button>
+        <button class="hotspot hotspot-3" data-tooltip-id="tooltip-3"></button>
 
- <!-- Нижняя плашка -->
-    <div class="bottom-panel">
-      <button class="coin-button" id="coinButton">
-        <span class="coin-text">30</span>
-        <span class="coin-icon">◎</span>
-      </button>
-      <button class="round-button" id="plusButton">+</button>
-    </div>
-    
-          
-    <!-- Модалка -->
-    <div class="modal" id="lockedModal">
-      <div class="modal-backdrop"></div>
-      <div class="modal-window">
-        <p class="modal-text">
-          откроется на 5 уровне! ждем тебя, совсем скоро!
-        </p>
-        <button class="modal-close-button" id="modalCloseButton">понятно</button>
+        <!-- Подсказки -->
+        <div id="tooltip-1" class="tooltip">Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.</div>
+        <div id="tooltip-2" class="tooltip">Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.</div>
+        <div id="tooltip-3" class="tooltip">Скоро будем тебя ждать! Одежда будет доступна с 5 уровня.</div>
+
+        <!-- Смена образа -->
+        <div class="outfit-panel">
+          <div class="outfit-label" id="outfit-label">Образ: базовый</div>
+          <button class="btn-outfit" id="btn-outfit">Сменить образ</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Альфики внизу -->
+    <div class="bottom-bar">
+      <div class="alpha-pill">
+        <div class="alpha-pill-amount"><span id="alpha-amount">30</span><div class="alpha-pill-icon"></div></div>
+        <div class="alpha-pill-plus" id="alpha-plus">+</div>
       </div>
     </div>
   </div>
 
-  <!-- JS: three.js + логика -->
-  <script type="module">
-    /***********************
-     * Импорты three.js
-     ***********************/
-import * as THREE from 'https://unpkg.com/three@latest/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@latest/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'https://unpkg.com/three@latest/examples/jsm/loaders/GLTFLoader.js';
-    /***********************
-     * DOM-элементы
-     ***********************/
-    const backButton = document.getElementById("backButton");
-    const hangerButton = document.getElementById("hangerButton");
-    const sideButton1 = document.getElementById("sideButton1");
-    const sideButton2 = document.getElementById("sideButton2");
-    const sideButton3 = document.getElementById("sideButton3");
-    const coinButton = document.getElementById("coinButton");
-    const plusButton = document.getElementById("plusButton");
-    const monsterContainer = document.getElementById("monsterContainer");
-
-    const modal = document.getElementById("lockedModal");
-    const modalBackdrop = modal.querySelector(".modal-backdrop");
-    const modalCloseButton = document.getElementById("modalCloseButton");
-
-    /***********************
-     * Обработчики интерфейса
-     ***********************/
-    backButton.addEventListener("click", () => {
-      window.location.href =
-        "https://mmarmar4028-gif.github.io/kids-site/game_screen.html";
-    });
-
-    hangerButton.addEventListener("click", () => {
-      modal.classList.add("visible");
-    });
-
-    sideButton2.addEventListener("click", () => {
-      console.log("Вторая боковая кнопка нажата");
-      modal.classList.add("visible");
-    });
-
-    sideButton1.addEventListener("click", () => {
-      console.log("Первая боковая кнопка нажата");
-    });
-
-    sideButton3.addEventListener("click", () => {
-      console.log("Третья боковая кнопка нажата");
-    });
-
-    const closeModal = () => modal.classList.remove("visible");
-    modalCloseButton.addEventListener("click", closeModal);
-    modalBackdrop.addEventListener("click", closeModal);
-
-    coinButton.addEventListener("click", () => {
-      console.log("Кнопка монет нажата");
-    });
-
-    plusButton.addEventListener("click", () => {
-      console.log("Кнопка '+' нажата");
-    });
-
-    /***********************
-     * THREE.JS: сцена, камера, рендер
-     ***********************/
-    const scene = new THREE.Scene();
-
-    const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 100);
-    camera.position.set(0, 0.4, 1.6);
-
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true
-    });
-    renderer.setPixelRatio(window.devicePixelRatio || 1);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    monsterContainer.appendChild(renderer.domElement);
-
-    function resizeRenderer() {
-      const width = monsterContainer.clientWidth || 187;
-      const height = monsterContainer.clientHeight || 280;
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    }
-
-    resizeRenderer();
-    window.addEventListener("resize", resizeRenderer);
-
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffcccc, 1.2);
-    hemiLight.position.set(0, 1, 0);
-    scene.add(hemiLight);
-
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
-    dirLight.position.set(1, 1.2, 1.5);
-    scene.add(dirLight);
-
-    /***********************
-     * Загрузка DRACO + GLB-модели
-     ***********************/
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath(
-      "https://www.gstatic.com/draco/versioned/decoders/1.5.6/"
-    );
-    dracoLoader.setDecoderConfig({ type: "js" });
-    dracoLoader.preload();
-
-    const gltfLoader = new GLTFLoader();
-    gltfLoader.setDRACOLoader(dracoLoader);
-
-    let monster = null;
-
-    gltfLoader.load(
-      "monster.glb",
-      (gltf) => {
-        monster = gltf.scene;
-
-        // Нормализуем модель: центр в (0,0,0), масштаб по высоте
-       // 1) bounds модели
-const box = new THREE.Box3().setFromObject(monster);
-const size = box.getSize(new THREE.Vector3());
-const center = box.getCenter(new THREE.Vector3());
-
-// 2) центрируем модель
-monster.position.sub(center);
-
-// 3) FIT-камера с учетом aspect (чтобы не резало ни по ширине, ни по высоте)
-const fitOffset = 1.8; // увеличь до 2.0 если всё ещё режет
-const aspect = camera.aspect;
-
-const vFOV = THREE.MathUtils.degToRad(camera.fov);             // вертикальный
-const hFOV = 2 * Math.atan(Math.tan(vFOV / 2) * aspect);       // горизонтальный
-
-const distV = (size.y / 2) / Math.tan(vFOV / 2);
-const distH = (size.x / 2) / Math.tan(hFOV / 2);
-const distance = Math.max(distV, distH) * fitOffset;
-
-camera.position.set(0, 0.2, distance);
-camera.lookAt(0, 0, 0);
-camera.near = distance / 100;
-camera.far  = distance * 100;
-camera.updateProjectionMatrix();
-
-        
-        monster.traverse((child) => {
-          if (child.isMesh) {
-            child.castShadow = false;
-            child.receiveShadow = false;
-          }
-        });
-
-        scene.add(monster);
-        console.log("Модель монстрика успешно загружена");
-      },
-      undefined,
-      (error) => {
-        console.error("Ошибка при загрузке модели монстрика:", error);
-      }
-    );
-
-    /***********************
-     * Анимация — монстрик крутится по Y
-     ***********************/
-    function animate() {
-      requestAnimationFrame(animate);
-
-      if (monster) {
-        monster.rotation.y += 0.01;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-  </script>
+  <!-- Модалка -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-text">Пора закупиться! Ждём, пока ты достигнешь уровня 5 и сможешь покупать вещи для Пушика.</div>
+      <div class="modal-footer"><button class="btn-close-modal" id="btn-close-modal">Закрыть</button></div>
+    </div>
+  </div>
 
   <script>
-    // LocalStorage — общее для всех экранов
-let userData = JSON.parse(localStorage.getItem('plushikUser'));
-if (!userData) {
-  userData = { name: "Александра", balance: 6000, alfiki: 30 };
-  localStorage.setItem('plushikUser', JSON.stringify(userData));
-}
+    document.addEventListener("DOMContentLoaded", () => {
+      const backBtn = document.getElementById("btn-back");
+      const hangerBtn = document.getElementById("btn-hanger");
+      const modal = document.getElementById("modal-overlay");
+      const pushikImg = document.getElementById("pushik-img");
+      const outfitLabel = document.getElementById("outfit-label");
 
-// Обновляем число альфиков на этом экране при загрузке
-const alfikiDisplayNew = document.getElementById('alfikiCount');
-if (alfikiDisplayNew) alfikiDisplayNew.textContent = userData.alfiki;
+      // Образы (просто меняем PNG)
+      const outfits = [
+        { name: "базовый", src: "pushik_base.png" },
+        { name: "в кепке", src: "pushik_cap.png" },
+        { name: "в очках", src: "pushik_glasses.png" }
+      ];
+      let current = 0;
 
-// Функция покупки (та же, что и на других экранах)
-function buyAlfiki(count, price) {
-  let data = JSON.parse(localStorage.getItem('plushikUser')) || { balance: 6000, alfiki: 30 };
-  if (data.balance >= price) {
-    data.balance -= price;
-    data.alfiki += count;
-    localStorage.setItem('plushikUser', JSON.stringify(data));
-    
-    // Обновляем на ЭТОМ экране
-    if (alfikiDisplayNew) alfikiDisplayNew.textContent = data.alfiki;
-    
-    alert(`Куплено ${count} альфиков! Осталось: ${data.balance} ₽`);
-  } else {
-    alert('Недостаточно денег!');
-  }
-  closeOverlay('buy-alfiki-popup');
-}
+      document.getElementById("btn-outfit").onclick = () => {
+        current = (current + 1) % outfits.length;
+        pushikImg.src = outfits[current].src;
+        outfitLabel.textContent = "Образ: " + outfits[current].name;
+        pushikImg.classList.add("bouncy");
+        setTimeout(() => pushikImg.classList.remove("bouncy"), 220);
+      };
 
-  // Закрытие любого поп-апа по клику на тёмный фон
-document.querySelectorAll('.overlay').forEach(overlay => {
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) {
-      overlay.style.display = 'none';
-    }
-  });
-});
-</script>
-  
+      // Остальные кнопки
+      backBtn.onclick = () => history.back();
+      hangerBtn.onclick = () => modal.classList.add("visible");
+      document.getElementById("btn-close-modal").onclick = () => modal.classList.remove("visible");
+      document.getElementById("alpha-plus").onclick = () => alert("Магазин альфиков скоро!");
+
+      // Подсказки на точках
+      document.querySelectorAll(".hotspot").forEach(hot => {
+        hot.onclick = (e) => {
+          e.stopPropagation();
+          const tip = document.getElementById(hot.dataset.tooltipId);
+          document.querySelectorAll(".tooltip").forEach(t => t.classList.remove("visible"));
+          tip.classList.add("visible");
+        };
+      });
+      document.addEventListener("click", () => document.querySelectorAll(".tooltip").forEach(t => t.classList.remove("visible")));
+    });
+  </script>
 </body>
 </html>
